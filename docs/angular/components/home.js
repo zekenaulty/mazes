@@ -1,8 +1,10 @@
 (function() {
   "use strict";
 
-  function homeController() {
+  function homeController($scope) {
     let vm = this;
+
+    $scope.$emit("set-caption", "");
   }
 
   angular.module("mazes").component("home", {

@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  function binaryController($element, $timeout, squareMaze) {
+  function binaryController($scope, $element, $timeout, squareMaze) {
     var vm = squareMaze.extend(this, 576, 16); //initialize our maze
 
     this.$onInit = function() {};
@@ -27,6 +27,7 @@
     };
 
     vm.$postLink = function() {
+      $scope.$emit("set-caption", "Binary Tree");
       $timeout(function() {
         vm.carve();
       }, 0);

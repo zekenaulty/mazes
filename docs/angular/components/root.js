@@ -1,9 +1,17 @@
 (function() {
   "use strict";
 
-  function rootController($state) {
+  function rootController($scope, $state) {
     let vm = this;
-    vm.mazes = [{ caption: "Binary", state: "binary" }];
+    vm.data = { text: "" };
+    vm.mazes = [
+      { caption: "Binary", state: "binary" },
+      { caption: "Sidewinder", state: "sidewinder" }
+    ];
+
+    $scope.$on("set-caption", function(s, text) {
+      vm.data.text = text;
+    });
   }
 
   angular.module("mazes").component("root", {
@@ -39,6 +47,9 @@
         </div>
       </li>
     </ul>
+  </div>
+  <div>
+    <span class="h5">{{vm.data.text}}</span>
   </div>
 </nav>
 <div>
