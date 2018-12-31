@@ -17,7 +17,10 @@
     <div>&nbsp;</div>
     <h4>Mazes</h4>
     <span>
-    I've decided to finally follow through on learning to generate mazes. It has always been something I was interested in, but never had the chance to work on. Being a self taught developer/programmer algorithms have always been my weakest area and I hope building this site has lessened that to some degree.
+    I've decided to finally follow through on learning to generate mazes. 
+    It has always been something I was interested in, but never had the chance to work on. 
+    Being a self taught developer/programmer algorithms have always been my weakest area and I hope building this site will help 
+    change that.
     </span>
     <div>&nbsp;</div>
 </div>
