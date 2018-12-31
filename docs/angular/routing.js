@@ -20,5 +20,10 @@
           url: "/binary",
           component: "binary"
         });
+
+      $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+      });
     });
 })();
