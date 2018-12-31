@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="mazes">
+  <head>
+    <title>Mazes</title>
+    <!-- js libs -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-ui-router.min.js"></script>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+
+    <!-- app js -->
+    <script src="angular/mazes.app.js"></script>
+    <script src="angular/routing.js"></script>
+    <script src="angular/services/squareMaze.js"></script>
+    <script src="angular/components/root.js"></script>
+    <script src="angular/components/binary.js"></script>
+    <script src="angular/components/home.js"></script>
+
+    <!-- app css -->
+    <style>
+      body {
+        background-color: black;
+      }
+      .center-me {
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body class="container">
+    <root></root>
+  </body>
+</html>
