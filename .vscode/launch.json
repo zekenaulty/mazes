@@ -8,7 +8,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Go Go Gadget Web",
-      "file": "${workspaceFolder}/docs/index.html"
+      "file": "${workspaceFolder}/docs/readme.html"
     }
   ]
 }
