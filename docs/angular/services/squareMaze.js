@@ -1,8 +1,8 @@
-(function() {
+(function () {
   "use strict";
 
-  angular.module("mazes").service("squareMaze", function() {
-    this.extend = function(target, mazeSize, cellSize) {
+  angular.module("mazes").service("squareMaze", function () {
+    this.extend = function (target, mazeSize, cellSize) {
       //constructor function for a maze
       function Maze(mSize, cSize) {
         //constructor function for a room/cell
@@ -22,43 +22,43 @@
           this.y = size * row;
           this.row = row;
           this.column = column;
-          this.visited = false;
+          //this.visited = false;
           this.cellsX = Math.floor(space / size);
 
-          this.getIndex = function(row, column) {
+          this.getIndex = function (row, column) {
             return row * this.cellsX + column;
           };
 
-          this.northNeighbor = function() {
+          this.northNeighbor = function () {
             if (this.row === 0) return null;
             let idx = this.getIndex(this.row - 1, this.column);
             let r = this.rooms[idx];
             return r;
           };
 
-          this.eastNeighbor = function() {
+          this.eastNeighbor = function () {
             if (this.column > this.cellsX - 2) return null;
             let idx = this.getIndex(this.row, this.column + 1);
             let r = this.rooms[idx];
             return r;
           };
 
-          this.southNeighbor = function() {
+          this.southNeighbor = function () {
             if (this.row > this.cellsX - 2) return null;
             let idx = this.getIndex(this.row + 1, this.column);
             let r = this.rooms[idx];
             return r;
           };
 
-          this.westNeighbor = function() {
+          this.westNeighbor = function () {
             if (this.column === 0) return null;
             let idx = this.getIndex(this.row, this.column - 1);
             let r = this.rooms[idx];
             return r;
           };
 
-          this.carve = function(direction) {
-            this.visited = true;
+          this.carve = function (direction) {
+            //this.visited = true;
             let d = direction.toLowerCase();
             switch (d) {
               case "north":
@@ -96,7 +96,7 @@
             }
           };
 
-          this.draw = function(gfx) {
+          this.draw = function (gfx) {
             //north wall?
             if (this.walls.north) {
               gfx.beginPath();
@@ -140,7 +140,7 @@
         this.totalRooms = this.rows * this.columns;
         this.rooms = [];
 
-        this.draw = function(gfx, bg, fg) {
+        this.draw = function (gfx, bg, fg) {
           gfx.globalAlpha = 1.0;
           gfx.fillStyle = bg;
           gfx.clearRect(0, 0, this.width, this.height);
@@ -178,7 +178,7 @@
           );
         }
 
-        this.reset = function() {
+        this.reset = function () {
           for (let i = 0; i < this.rooms.length; i++) {
             this.rooms[i].walls = {
               north: true,

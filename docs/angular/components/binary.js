@@ -1,12 +1,12 @@
-(function() {
+(function () {
   "use strict";
 
   function binaryController($scope, $element, $timeout, squareMaze) {
     var vm = squareMaze.extend(this, 576, 16); //initialize our maze
 
-    this.$onInit = function() {};
+    this.$onInit = function () {};
 
-    vm.carve = function(reset) {
+    vm.carve = function (reset) {
       if (reset) this.maze.reset();
 
       /* simple maze carving */
@@ -19,16 +19,14 @@
         }
       }
 
-      let gfx = $element[0].children[0].children[1].children[0].getContext(
-        "2d"
-      );
+      let gfx = $element[0].children[0].children[1].children[0].getContext("2d");
 
       vm.maze.draw(gfx, "black", "white");
     };
 
-    vm.$postLink = function() {
+    vm.$postLink = function () {
       $scope.$emit("set-caption", "Binary Tree");
-      $timeout(function() {
+      $timeout(function () {
         vm.carve();
       }, 0);
     };

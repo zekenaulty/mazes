@@ -1,8 +1,8 @@
-(function() {
+(function () {
   "use strict";
   angular
     .module("mazes")
-    .config(function(
+    .config(function (
       $stateProvider,
       $urlMatcherFactoryProvider,
       $urlRouterProvider,
@@ -12,8 +12,14 @@
       $urlRouterProvider.otherwise("/home");
 
       $stateProvider
-        .state("home", { url: "/home", component: "home" })
-        .state("binary", { url: "/binary", component: "binary" })
+        .state("home", {
+          url: "/home",
+          component: "home"
+        })
+        .state("binary", {
+          url: "/binary",
+          component: "binary"
+        })
         .state("sidewinder", {
           url: "/sidewinder",
           component: "sidewinder"
