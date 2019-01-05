@@ -1,23 +1,20 @@
 (function () {
   "use strict";
 
-  function binaryController($scope, $element, $timeout, squareMaze) {
-    var vm = squareMaze.extend(this, 576, 16); //initialize our maze
+  function binaryController($scope, $element, $timeout, binary) {
+    var vm = this; //initialize our maze
 
-    this.$onInit = function () {};
+    this.$onInit = function () {
+      vm.maze = new binary.Maze(36, 36, 16, 16);
+    };
 
     vm.carve = function (reset) {
-      if (reset) this.maze.reset();
-
-      /* simple maze carving */
-      for (let i = 0; i < vm.maze.totalRooms; i++) {
-        let d = Math.random() < 0.5 ? "east" : "north";
-        let r = vm.maze.rooms[i].carve(d);
-        if (!r) {
-          //always carve
-          vm.maze.rooms[i].carve(d === "east" ? "north" : "east");
-        }
+      if (reset) {
+        vm.maze.maze.init();
+        vm.maze.maze.config();
       }
+
+      vm.maze.generate();
 
       let gfx = $element[0].children[0].children[1].children[0].getContext("2d");
 

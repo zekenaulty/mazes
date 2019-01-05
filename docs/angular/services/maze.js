@@ -2,66 +2,90 @@
     "use strict";
 
     angular.module("mazes").service("maze", function () {
-        this.new = function (rowCount, columnCount, roomWidth, roowHeight, ) {
+        this.new = function (rowCount, columnCount, roomWidth, roomHeight, ) {
 
-            function Cell(maze, row, column, width, height) {
+            class Cell {
+                constructor(grid, row, column, width, height) {
+                    //I should do this properly later with get/set, but with no read only we should be fine
+                    this.grid = grid;
+                    this.row = row;
+                    this.column = column;
+                    this.width = width;
+                    this.height = height;
+                    this.x = row * width;
+                    this.y = column * height;
+                    this.links = {};
 
-                this.maze = maze;
-                this.row = row;
-                this.column = column;
-                this.width = width;
-                this.height = height;
-                this.x = row * width;
-                this.y = column * height;
-                this.links = {};
+                    //this is a helper for working with linked passges
+                    this.walls = {
+                        north: true,
+                        east: true,
+                        south: true,
+                        west: true
+                    };
 
-                this.key = function () {
+                    //keep up with the joneses?
+                    this.neighbors = {
+                        north: null,
+                        east: null,
+                        south: null,
+                        west: null
+                    };
+                }
+
+                key() {
                     return this.row + ',' + this.column;
-                };
+                }
 
-                this.link = function (cell, biDirectional = true) {
+                link(cell, biDirectional) {
                     this.links[cell.key()] = true;
-                    if (biDirectional)
-                        cell.link(this, false)
-                };
+                    if (biDirectional) cell.link(this, false);
+                }
 
-                this.unlink = function (cell, biDirectional = true) {
+                unlink(cell, biDirectional) {
                     delete this.links[cell.key()];
-                    if (biDirectional)
-                        cell.unlink(this, false)
-                };
+                    if (biDirectional) cell.unlink(this, false);
+                }
 
-                this.walls = {
-                    north: true,
-                    east: true,
-                    south: true,
-                    west: true
-                };
+                findNeighbors() {
+                    /*
+                            +---+---+---+
+                            |   | N |   |
+                            +---+---+---+
+                            | W | O | E |
+                            +---+---+---+
+                            |   | S |   |
+                            +---+---+---+
+                    */
 
-                this.neighbors = {
-                    north: null,
-                    east: null,
-                    south: null,
-                    west: null
-                };
-
-                this.findNeighbors = function () {
+                    //north? row - 1, c
                     if (this.row > 0)
-                        this.neighbors.north = this.maze[this.row - 1][this.column];
+                        this.neighbors.north = this.cell(this.row - 1, this.column);
+                    else
+                        this.neighbors.north = null;
 
-                    if (this.column < this.maze[this.row].length - 1)
-                        this.neighbors.east = this.maze[this.row][this.column - 1];
+                    //east?
+                    if (this.column < this[this.row].length - 1)
+                        this.neighbors.east = this.cell(this.row, this.column - 1);
+                    else
+                        this.neighbors.east = null;
 
-                    if (this.row < this.maze.length - 1)
-                        this.neighbors.south = this.maze[this.row + 1][this.column];
+                    //south?
+                    if (this.row < this.length - 1)
+                        this.neighbors.south = this.cell(this.row + 1, this.column);
+                    else
+                        this.neighbors.south = null;
 
+                    //west?
                     if (this.column > 0)
-                        this.neighbors.west = this.maze[this.row][this.column - 1];
-                };
+                        this.neighbors.west = this.cell(this.row, this.column - 1);
+                    else
+                        this.neighbors.west = null;
+                }
 
-                this.carve = function (direction) {
+                carve(direction) {
+
                     let d = direction.toLowerCase();
-
                     if (d === 'north' && this.neighbors.north) {
                         this.walls.north = false;
                         this.neighbors.north.walls.south = false;
@@ -91,9 +115,9 @@
                     }
 
                     return false;
-                };
+                }
 
-                this.draw = function (gfx) {
+                draw(gfx) {
                     //north wall?
                     if (this.walls.north) {
                         gfx.beginPath();
@@ -102,6 +126,7 @@
                         gfx.closePath();
                         gfx.stroke();
                     }
+
                     //east wall?
                     if (this.walls.east) {
                         gfx.beginPath();
@@ -110,6 +135,7 @@
                         gfx.closePath();
                         gfx.stroke();
                     }
+
                     //south wall?
                     if (this.walls.south) {
                         gfx.beginPath();
@@ -118,6 +144,7 @@
                         gfx.closePath();
                         gfx.stroke();
                     }
+
                     //west wall?
                     if (this.walls.west) {
                         gfx.beginPath();
@@ -126,18 +153,46 @@
                         gfx.closePath();
                         gfx.stroke();
                     }
-                };
-            }
+                }
+            } //end Cell
 
-            function createMaze(rows, columns, cellWidth, cellHeight) {
-                let maze = [];
+            class Grid extends Array {
+                constructor(rows, columns, cellWidth, cellHeight) {
+                    this.rowCount = rows;
+                    this.cellCount = columns;
+                    this.cellWidth = cellWidth;
+                    this.cellHeight = cellHeight;
+                    this.width = rows * cellWidth;
+                    this.height = columns * cellHeight;
+                    this.cellCount = this.rowCount * this.cellCount;
+                    init();
+                }
 
-                maze.rowCount = rows;
-                maze.cellCount = columns;
-                maze.cellWidth = cellWidth;
-                maze.cellHeight = cellHeight;
+                init() {
+                    for (let r = 0; r < this.rowCount; r++) {
+                        for (let c = 0; c < this.cellCount; c++) {
+                            if (this.length === r) {
+                                let row = [];
+                                row.cells = function* () {
+                                    for (let idx = 0; idx < this.length; idx++)
+                                        yield this[idx];
+                                };
+                                this.push(row);
+                            }
 
-                maze.cell = function (row, column) {
+                            this[r].push(new Cell(this, r, c, this.cellWidth, this.cellHeight));
+                        }
+                    }
+                    this.config();
+                }
+
+                config() {
+                    const iCells = this.cells();
+                    for (let cell of iCells)
+                        cell.findNeighbors();
+                }
+
+                cell(row, column) {
                     if (row >= this.length)
                         return null;
 
@@ -145,69 +200,60 @@
                         return null;
 
                     return this[row][column];
-                };
+                }
 
-                maze.config = function () {
-                    for (let r = 0; r < rows; r++) {
-                        for (let c = 0; c < columns; c++) {
-                            if (this[r][c]) {
-                                this.cell(r, c).findNeighbors();
-                            }
-                        }
-                    }
-                };
-
-                maze.init = function (rows, columns) {
-                    for (let r = 0; r < rows; r++) {
-                        for (let c = 0; 0 < columns; c++) {
-                            if (this.length < r - 1)
-                                this.push([]);
-
-                            this[r].push(new Cell(this, r, c, rw, rh));
-                        }
-                    }
-                    this.config();
-                };
-
-                maze.rows = function* () {
-                    for (let r = 0; r < this.length; r++) {
+                * rows() {
+                    for (let r = 0; r < this.length; r++)
                         yield this[r];
-                    }
-                };
+                }
 
-                maze.cells = function* () {
+                * cells() {
                     for (let r = 0; r < this.length; r++) {
                         for (let c = 0; c < this[r].length; c++) {
                             yield this.cell(r, c);
                         }
                     }
-                };
+                }
 
-                maze.randomCell = function () {
+                random() {
                     let r = Math.floor(Math.random() * this.length);
                     let c = Math.floor(Math.random() * this[r].length);
 
                     return this.cell(r, c);
-                };
+                }
 
-                maze.totalCells = function () {
-                    return this.rowCount * this.cellCount;
-                };
+                draw(gfx, bg, fg) {
+                    //setup canvas
+                    gfx.globalAlpha = 1.0;
+                    gfx.fillStyle = bg;
+                    gfx.clearRect(0, 0, this.width, this.height);
+                    gfx.fillRect(0, 0, this.width, this.height);
+                    gfx.strokeStyle = fg;
+                    gfx.lineWidth = 1;
 
-                maze.draw = function (gfx) {
-                    try {
-                        let c = this.cells.next();
-                        while (!c.done) {
-                            c.value.draw(gfx);
-                            c = this.cells.next();
-                        }
-                    } catch {
-                        /* browser throws at last element */
+                    //draw cells
+                    const iCells = this.cells();
+                    for (let cell of iCells) {
+                        cell.draw(gfx);
                     }
-                };
-            }
 
-            return createMaze(rowCount, columnCount, roomWidth, roowHeight);
+                    //outside edge
+                    gfx.lineWidth = 2;
+                    gfx.beginPath();
+                    gfx.moveTo(0, 0);
+                    gfx.lineTo(this.width, 0);
+                    gfx.lineTo(this.width, this.height);
+                    gfx.lineTo(0, this.height);
+                    gfx.lineTo(0, 0);
+                    gfx.closePath();
+                    gfx.stroke();
+
+                }
+
+            } //end Grid
+
+
+            return new Grid(rowCount, columnCount, roomWidth, roomHeight);
         };
     });
 })();

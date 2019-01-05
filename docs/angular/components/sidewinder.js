@@ -1,68 +1,20 @@
 (function () {
   "use strict";
 
-  function sidewinderController($scope, $element, $timeout, $log, squareMaze) {
-    var vm = squareMaze.extend(this, 576, 16); //initialize our maze
+  function sidewinderController($scope, $element, $timeout, $log, sidewinder) {
+    var vm = this; //initialize our maze
 
-    this.$onInit = function () {};
+    this.$onInit = function () {
+      vm.maze = new sidewinder.Maze(36, 36, 16, 16);
+    };
 
     vm.carve = function (reset) {
-      if (reset) this.maze.reset();
-
-      let cellCount = Math.floor(576 / 16);
-      let sw = (cellCount - 1) * cellCount; // southwest corner (0, 35)
-      let room = this.maze.rooms[sw];
-      let visited = 0;
-      let run = [room];
-      let bit = Math.random() > 0.5 ? true : false;
-      let nextRoom = null;
-
-      run.push(room); //add the first room
-
-      while (visited < this.maze.totalRooms) {
-        if (bit) {
-          if (run.length > 0) {
-            let n = room.northNeighbor();
-            if (n) {
-              let runRoom = run[0];
-
-              if (run.length > 1)
-                runRoom = run[Math.floor(Math.random() * run.length)];
-
-              runRoom.carve("north");
-            } else {
-              room.carve("east");
-            }
-            run = [];
-          }
-        } else {
-          room.carve("east");
-        }
-
-        nextRoom = room.eastNeighbor();
-        if (nextRoom === null) {
-          if (run.length > 0) {
-            let n = room.northNeighbor();
-            if (n) {
-              let runRoom = run[0];
-
-              if (run.length > 1)
-                runRoom = run[Math.floor(Math.random() * run.length)];
-
-              runRoom.carve("north");
-            } else {
-              break; //end
-            }
-            run = [];
-          }
-          nextRoom = this.maze.rooms[(room.row - 1) * cellCount];
-        }
-
-        bit = Math.random() > 0.5 ? true : false;
-        room = nextRoom;
-        run.push(room);
-        visited++;
+      if (reset) {
+        vm.maze.maze.init();
+        vm.maze.maze.config();
       }
+
+      vm.maze.generate();
 
       let gfx = $element[0].children[0].children[1].children[0].getContext("2d");
 
