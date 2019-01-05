@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-
+  //this was the first maze class/service, but it is not flexiable enough, and I went to a "traditional" grid
   angular.module("mazes").service("squareMaze", function () {
     this.extend = function (target, mazeSize, cellSize) {
       //constructor function for a maze
