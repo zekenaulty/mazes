@@ -2,10 +2,8 @@
   "use strict";
 
   function rootController(
-    $scope,
     $element,
     $timeout,
-    $log,
     binary,
     sidewinder
   ) {
@@ -36,8 +34,8 @@
 
       //all our maze generator algorithim constructors
       vm.generators = [
-        binary.Maze,
-        sidewinder.Maze
+        binary,
+        sidewinder
       ];
 
       vm.mazes = []; //load all of our maze generator instances in here when we change the size
