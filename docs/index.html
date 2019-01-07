@@ -8,22 +8,18 @@
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/angular.min.js"></script>
-  <script src="js/angular-ui-router.min.js"></script>
+  <script src="js/randomColor.js"></script>
 
   <!-- css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
   <!-- app js -->
   <script src="angular/mazes.app.js"></script>
-  <script src="angular/routing.js"></script>
   <script src="angular/services/maze.js"></script>
   <script src="angular/services/mazes/binary.js"></script>
   <script src="angular/services/mazes/sidewinder.js"></script>
   <script src="angular/services/pathfinders/dijkstra.js"></script>
   <script src="angular/components/root.js"></script>
-  <script src="angular/components/home.js"></script>
-  <script src="angular/components/binary.js"></script>
-  <script src="angular/components/sidewinder.js"></script>
 
   <!-- app css -->
   <style>
@@ -34,10 +30,28 @@
     .center-me {
       margin: 0 auto;
     }
+
+    .page-part {
+      margin: 0 auto;
+      width: 576px;
+    }
+
+    .space-out {
+      margin: 3px 3px 3px 3px;
+    }
+
+    .pad {
+      padding: 6px 6px 6px 6px;
+    }
+
+
+    .lb {
+      margin-top: 1.2em !important
+    }
   </style>
 </head>
 
-<body class="container">
+<body class="container-fluid">
   <root></root>
 </body>
 

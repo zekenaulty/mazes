@@ -2,72 +2,85 @@
   "use strict";
 
   function rootController(
-    scope,
+    $scope,
     $element,
     $timeout,
     $log,
-    ROW_COUNT,
-    COLUMN_COUNT,
-    CELL_WIDTH,
-    CELL_HEIGHT,
-    CANVAS_WIDTH,
-    CANVAS_HEIGHT,
     binary,
     sidewinder
   ) {
     let vm = this;
 
 
-
-
-    vm.selectMaze = function (idx) {
-      let maze = vm.mazes[idx];
-
-      vm.data.selectedIndex = idx;
-      vm.data.text = maze.name;
-      vm.data.description = maze.description;
-      maze.init();
-      maze.generate();
-
-      let gfx = $element[0].children[1].children[1].children[0].getContext("2d");
-      maze.draw(gfx, "black", "white");
-    };
-
     vm.$onInit = function () {
-      //expose constant for cannvas width
-      Object.defineProperty(vm, 'CANVAS_WIDTH', {
-        get: function () {
-          return CANVAS_WIDTH;
-        },
-        writable: false
-      });
-
-      //expose constant for canvas height
-      Object.defineProperty(vm, 'CANVAS_HEIGHT', {
-        get: function () {
-          return CANVAS_WCANVAS_HEIGHTIDTH;
-        },
-        writable: false
-      });
-
+      //current view data
       vm.data = {
         text: '',
-        description: ''
+        description: '',
+        selectedSize: '3',
+        selectedMaze: 0
       };
 
-      //load all of our mazes
-      vm.mazes = [
-        new binary.Maze(ROW_COUNT, COLUMN_COUNT, CELL_WIDTH, CELL_HEIGHT),
-        new sidewinder.Maze(ROW_COUNT, COLUMN_COUNT, CELL_WIDTH, CELL_HEIGHT)
+      vm.sizes = [
+        { name: 'Very Very Short', rows: 6, columns: 6, width: 96, height: 96 },
+        { name: 'Extra Short', rows: 8, columns: 8, width: 72, height: 72 },
+        { name: 'Short', rows: 18, columns: 18, width: 32, height: 32 },
+        { name: 'Medium', rows: 24, columns: 24, width: 24, height: 24 },
+        { name: 'Long', rows: 32, columns: 32, width: 18, height: 18 },
+        { name: 'Extra Long', rows: 72, columns: 72, width: 8, height: 8 },
+        { name: 'Very Very Long', rows: 96, columns: 96, width: 6, height: 6 }
       ];
 
-      //start with a random maze
-      $timeout(function () {
-        vm.selectMaze(Math.floor(Math.random() * vm.mazes.length))
-      }, 0);
+      //our square, in which we put more squares
+      vm.canvasWidth = 576; vm.canvasHeight = 576;
+
+      //all our maze generator algorithim constructors
+      vm.generators = [
+        binary.Maze,
+        sidewinder.Maze
+      ];
+
+      vm.mazes = []; //load all of our maze generator instances in here when we change the size
+      vm.initGenerators = function () {
+        vm.mazes = []
+        let s = vm.sizes[vm.data.selectedSize];
+        for (let i = 0; i < vm.generators.length; i++) {
+          vm.mazes.push(new vm.generators[i](s.rows, s.columns, s.width, s.height));
+        }
+      };
+      vm.initGenerators();
+
+      //alloww for multiple sizes
+      vm.changeSize = function () {
+        vm.initGenerators();
+        vm.selectMaze(vm.data.selectedMaze);
+      };
+
+      //main worker for showing/changing mazes
+      vm.selectMaze = function (idx) {
+        let maze = vm.mazes[idx];
+
+        //keep track of the selected maze
+        vm.data.selectedMaze = idx;
+
+        //setup view
+        vm.data.selectedIndex = idx;
+        vm.data.text = maze.name;
+        vm.data.description = maze.description;
+
+        //prep and draw maze
+        maze.grid.init();
+        maze.generate();
+        maze.draw($element[0].children[1].children[1].children[0].getContext("2d"), "black", "white");
+      };
     };
 
-
+    vm.$postLink = function () {
+      $timeout(function () {
+        //start with a random maze, when the screen is ready
+        vm.selectMaze(Math.floor(Math.random() * vm.mazes.length));
+      }, 0);
+    };
   }
 
   angular.module("mazes").component("root", {
@@ -75,28 +88,59 @@
     controller: rootController,
     controllerAs: "vm",
     template: `
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#" ui-sref="home">Maze Generation</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark lb rounded">
+  <span class="navbar-brand text-danger">Maze Generation</span>
+  <button 
+    class="navbar-toggler" 
+    type="button" 
+    data-toggle="collapse" 
+    data-target="#mazes" 
+    aria-controls="mazes" 
+    aria-expanded="false" 
+    aria-label="Toggle Mazes Menu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse text-light" id="mazes">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a 
+          class="nav-link dropdown-toggle" 
+          href="#" 
+          id="mazeList" 
+          role="button" 
+          data-toggle="dropdown" 
+          aria-haspopup="true" 
+          aria-expanded="false">Mazes</a>
+        <div class="dropdown-menu" aria-labelledby="mazeList">
+          <a class="dropdown-item" href="javascript:void(0);" ng-repeat="m in vm.mazes" ng-click="vm.selectMaze($index)" title="{{m.description}}">{{m.name}}</a>
+        </div>
+      </li>
+    </ul>
+  </div>
   <div>
-    <span class="h5">{{vm.data.text}}</span>
+    <span class="h5 text-warning">{{vm.data.text}}</span>
   </div>
 </nav>
 <div>
   <div>&nbsp;</div>
-  <div style="width: 100%; margin: auto; text-align: center;">
-    <canvas width = "{{vm.CANVAS_WIDTH}}" height = "{{vm.CANVAS_HEIGHT}}" style = "display: inline;" / >
+  <div class="page-part">
+    <canvas width="{{vm.canvasWidth}}" height="{{vm.canvasHeight}}" style="display: inline;" />
   </div>
-  <div style="width: 100%;">
-    <div style="margin: auto; width: 576px; padding: 6px 6px 6px 6px;">
-      <button class="btn btn-primary" style="width: 100%" ng-click="vm.selectMaze(vm.data.selectedIndex);">Generate</button>
+  <div>
+    <div class="bg-dark text-light card page-part pad">
+    {{vm.data.description}}
     </div>
-    <div style="margin: auto; width: 576px; padding: 6px 6px 6px 6px;">
-      <button class="btn btn-secondary  dropdown-toggle" style="width: 50%" id="available-mazes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mazes</button>
-      <div class="dropdown-menu" aria-labelledby="available-mazes">
-        <a class="dropdown-item" ng-repeat="mz in vm.mazes" href="#" ng-click="vm.selectMaze($index)" title="{{mz.description}}">{{mz.name}}</a>
+    <div class="page-part">
+      <div class="space-out float-right">
+        <form class="form-inline">
+          <label class="text-light space-out">Maze Length/Size:</label>
+          <select ng-model="vm.data.selectedSize" ng-change="vm.changeSize()" class="form-control space-out">
+            <option ng-repeat="sz in vm.sizes" value="{{$index}}">{{sz.name}}</option>
+          </select>
+          <button class="btn btn-primary space-out" ng-click="vm.selectMaze(vm.data.selectedIndex);">Generate</button>
+        </form>
       </div>
     </div>
-    <div class="bg-light card" style="margin: auto; width: 576px; padding: 6px 6px 6px 6px;">{{vm.description}}</div>
   </div>
 </div>
 `
