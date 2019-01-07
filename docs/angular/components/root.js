@@ -88,18 +88,8 @@
     controller: rootController,
     controllerAs: "vm",
     template: `
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark lb rounded">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark lb rounded page-part">
   <span class="navbar-brand text-danger">Maze Generation</span>
-  <button 
-    class="navbar-toggler" 
-    type="button" 
-    data-toggle="collapse" 
-    data-target="#mazes" 
-    aria-controls="mazes" 
-    aria-expanded="false" 
-    aria-label="Toggle Mazes Menu">
-    <span class="navbar-toggler-icon"></span>
-  </button>
   <div class="collapse navbar-collapse text-light" id="mazes">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
@@ -127,7 +117,7 @@
     <canvas width="{{vm.canvasWidth}}" height="{{vm.canvasHeight}}" style="display: inline;" />
   </div>
   <div>
-    <div class="bg-dark text-light card page-part pad">
+    <div class="bg-dark text-light card page-part pad lb">
     {{vm.data.description}}
     </div>
     <div class="page-part">
