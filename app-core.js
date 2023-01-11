@@ -15,7 +15,7 @@ import { Sidewinder } from './mazes/sidewinder.js';
 go(() => {
 
   const stage = document.querySelector('.stage');
-  const maze = new View(stage, 2048);
+  const maze = new View(stage, 1024);
   const binary = new Binary(maze);
   const sidewinder = new Sidewinder(maze);
 
@@ -24,16 +24,22 @@ go(() => {
     () => { sidewinder.generate(); },
   ];
 
+  const generate = () => {
+    maze.seal();
+    generators.sample()();
+    maze.draw();
+  };
+
+/*
   stage.firstElementChild.addEventListener(
     'click',
     () => {
-      if (maze.drawing === 0) {
-        maze.seal();
-        generators.sample()();
-        maze.draw();
-      }
+      generate();
     });
-    
-    //trigger github pages publish!?!?!?!
+*/
+
+  setInterval(() => {
+    generate();
+  }, 150)
 
 });

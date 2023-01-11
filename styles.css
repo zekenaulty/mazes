@@ -1,15 +1,34 @@
 body {
-  background-color: silver;
+  background-color: black;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
 }
 
 .stage {
   position: fixed;
-  top: 0vh;
-  left: 0vw;
-  width: 100vw;
-  height: 100vh;
+  top: 10vh;
+  left: 5vw;
+  width: 90vw;
+  height: 80vh;
+  /*
   background-color: black;
   border: 1px solid black;
+  */
+}
+
+.head {
+  position: fixed;
+  top: 0vh;
+  left: 0vw;
+  height: 10vh;
+  width: 100vw;
+}
+
+
+.foot {
+  position: fixed;
+  top: 90vh;
+  left: 0vw;
+  height: 10vh;
+  width: 100vw;
 }

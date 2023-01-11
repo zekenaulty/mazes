@@ -13,6 +13,10 @@ export class View extends Array {
   columns = 0;
   rows = 0;
   drawing = 0;
+  width = 0;
+  height = 0;
+  ox = 0;
+  oy = 0;
   
   beginDrawing(){
     this.drawing++;
@@ -100,15 +104,17 @@ export class View extends Array {
       perRow++;
     }
     this.columns = perRow;
+    this.width = this.columns * scale;
 
     let rowCount = 1;
     while ((rowCount + 1) * scale < this.#canvas.height) {
       rowCount++;
     }
     this.rows = rowCount;
+    this.height = this.rows * scale;
 
-    let ox = Math.floor((this.#canvas.offsetWidth - (perRow * scale)) / 2);
-    let oy = Math.floor((this.#canvas.offsetHeight - (rowCount * scale)) / 2);
+    this.ox = Math.floor((this.#canvas.offsetWidth - (perRow * scale)) / 2);
+    this.oy = Math.floor((this.#canvas.offsetHeight - (rowCount * scale)) / 2);
 
     for (let r = 0; r < rowCount; r++) {
       this.push(new Row(this));
@@ -119,8 +125,8 @@ export class View extends Array {
           scale,
           r,
           c,
-          ox,
-          oy,
+          this.ox,
+          this.oy,
           this.#gfx));
       }
     }
@@ -158,10 +164,10 @@ export class View extends Array {
   #fill() {
     this.#gfx.fillStyle = 'black';
     this.#gfx.rect(
-      0,
-      0,
-      this.#canvas.width,
-      this.#canvas.height);
+      this.ox,
+      this.oy,
+      this.width,
+      this.height);
     this.#gfx.fill();
   }
 
