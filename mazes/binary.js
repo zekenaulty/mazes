@@ -1,7 +1,6 @@
-
 export class Binary {
   name = 'Binary Tree';
-  description = 'The binary tree walks each cell and choses N or E to carve into. If it can not carve in one direction it always carves in the other.';
+  description = 'The binary tree walks each cell and choses North or East to carve into. If it can not carve in one direction it always carves in the other.';
   view = undefined;
 
   constructor(view) {
@@ -24,8 +23,12 @@ export class Binary {
     }
 
 
-    this.start = this.view[0][0];
-    this.end = this.view[0][this.view.columns - 1];
+    this.view.start = this.view.sample().sample();
+    this.view.end = this.view.sample().sample();
+    while (this.view.start === this.view.end) {
+      this.view.end = this.view.sample().sample();
+    }
+    this.view.active = this.view.start;
   }
 
 }

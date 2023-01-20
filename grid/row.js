@@ -8,7 +8,7 @@ export class Row extends Array {
     this.parent = parent;
   }
 
-  draw(style, callback) {
+  draw(style) {
     for (let i = 0; i < this.length; i++) {
       this[i].draw(style);
     }

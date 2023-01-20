@@ -3,10 +3,10 @@ export class Sidewinder {
   description = 'The sidewinder always carves N or E. When carving east the cell is collected into a series. When we can no longer go east or, our coin toss tells us to go north, a random cell from said series is carved north, and we reset the series.';
   view = undefined;
 
-  constructor(view){
+  constructor(view) {
     this.view = view;
   }
-  
+
   generate() {
 
 
@@ -33,8 +33,13 @@ export class Sidewinder {
       }
     }
 
-    this.start = this.view[0][0];
-    this.end = this.view[this.view.rows - 1][this.view.columns - 1];
+    this.view.start = this.view.sample().sample();
+    this.view.end = this.view.sample().sample();
+    while (this.view.start === this.view.end) {
+      this.view.end = this.view.sample().sample();
+    }
+
+    this.view.active = this.view.start;
 
   }
 }

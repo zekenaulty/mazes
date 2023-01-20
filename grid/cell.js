@@ -15,12 +15,15 @@ export class Line {
 
   draw(style) {
     let exec = () => {
+
+
       this.#gfx.beginPath();
       this.#gfx.moveTo(this.x1, this.y1);
       this.#gfx.lineTo(this.x2, this.y2);
       this.#gfx.closePath();
       this.#gfx.strokeStyle = style;
       this.#gfx.stroke();
+      this.#gfx.closePath();
     };
 
     //setTimeout(() => { exec(); }, 10);
@@ -135,6 +138,35 @@ export class Cell extends Array {
 
   draw(style) {
 
+    if (this.root.start === this) {
+      this.#gfx.fillStyle = 'blue';
+    } else if (this.root.end === this) {
+      this.#gfx.fillStyle = 'green';
+    } else {
+      this.#gfx.fillStyle = 'black';
+    }
+
+    this.#gfx.beginPath();
+    this.#gfx.rect(
+      this.x,
+      this.y,
+      this.scale,
+      this.scale);
+    this.#gfx.fill();
+    this.#gfx.closePath();
+
+    if (this.root.active === this) {
+      this.#gfx.beginPath();
+      this.#gfx.fillStyle = 'red';
+      this.#gfx.rect(
+        this.x,
+        this.y,
+        this.scale,
+        this.scale);
+      this.#gfx.fill();
+      this.#gfx.closePath();
+    }
+
     if (this.walls.north) {
       this.lines.north.draw(style);
     }
@@ -150,7 +182,7 @@ export class Cell extends Array {
     if (this.walls.west) {
       this.lines.west.draw(style);
     }
-    
+
   }
 
   get key() {
@@ -181,7 +213,7 @@ export class Cell extends Array {
   }
 
   connection(dir, open) {
-    
+
     if (!dir) {
       return false;
     }
@@ -192,7 +224,7 @@ export class Cell extends Array {
       south: 'north',
       west: 'east'
     };
-    
+
     const d = dir.toLowerCase();
     const o = op[d];
     const n = this.neighbors[d];

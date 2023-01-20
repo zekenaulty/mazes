@@ -17,12 +17,15 @@ export class View extends Array {
   height = 0;
   ox = 0;
   oy = 0;
-  
-  beginDrawing(){
+  start = undefined;
+  end = undefined;
+  active = undefined;
+
+  beginDrawing() {
     this.drawing++;
   }
-  
-  endDrawing(){
+
+  endDrawing() {
     this.drawing--;
   }
 
@@ -38,9 +41,16 @@ export class View extends Array {
 
     this.#stage = stage;
     this.#createCanvas();
+    this.#init();
 
-    this.#draw();
+  }
 
+  resize(roomCount) {
+    this.#roomCount = roomCount;
+    this.length = 0;
+    this.#populate();
+    this.#init();
+    this.#fill();
   }
 
   #createCanvas() {
@@ -74,7 +84,7 @@ export class View extends Array {
     return Math.floor(Math.max(sw, sh));
   }
 
-  #draw() {
+  #init() {
     if (this.#canvas) {
       if (!this.#created) {
         /* ensure we scale the frame properly */
@@ -84,13 +94,16 @@ export class View extends Array {
         this.#created = true;
       }
 
-      this.#fill();
-      this.#drawGrid();
+      //this.#fill();
+      //this.#drawGrid();
 
     }
   }
 
   #populate() {
+    for (let n = 0; n < this.length; n++) {
+      this[n].length = 0;
+    }
     this.length = 0;
 
     let scale = this.#cellScale(
@@ -156,19 +169,28 @@ export class View extends Array {
 
   #drawGrid() {
     this.#gfx.lineWidth = 1;
+    this.#fill();
     for (let i = 0; i < this.length; i++) {
       this[i].draw('silver');
     }
   }
 
+  fill() {
+    this.#fill();
+  }
+
   #fill() {
+    this.#gfx.beginPath();
     this.#gfx.fillStyle = 'black';
+    this.#gfx.strokeStyle = 'black';
     this.#gfx.rect(
-      this.ox,
-      this.oy,
-      this.width,
-      this.height);
+      0,
+      0,
+      this.#canvas.width,
+      this.#canvas.height);
     this.#gfx.fill();
+    this.#gfx.stroke();
+    this.#gfx.closePath();
   }
 
   draw() {
@@ -185,6 +207,13 @@ export class View extends Array {
         this[r][c].walls.west = true;
         this[r][c].links = {};
       }
+    }
+  }
+
+  move(dir) {
+    if (!this.active.walls[dir]) {
+      this.active = this.active.neighbors[dir];
+      this.draw();
     }
   }
 

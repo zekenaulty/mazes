@@ -22,6 +22,7 @@ body {
   left: 0vw;
   height: 10vh;
   width: 100vw;
+  color: silver;
 }
 
 
@@ -31,4 +32,6 @@ body {
   left: 0vw;
   height: 10vh;
   width: 100vw;
+  text-align: center;
+  vertical-align: bottom;
 }
