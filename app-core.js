@@ -14,7 +14,7 @@ import { Sidewinder } from './mazes/sidewinder.js';
 
 go(() => {
 
-  let rooms = 96;
+  let rooms = 16;
   let factor = 0.15;
   let level = 0;
   const stage = document.querySelector('.stage');

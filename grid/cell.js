@@ -142,6 +142,8 @@ export class Cell extends Array {
       this.#gfx.fillStyle = 'blue';
     } else if (this.root.end === this) {
       this.#gfx.fillStyle = 'green';
+    } else if (this.root.visited.includes(this)) {
+      this.#gfx.fillStyle = 'cornflowerblue';
     } else {
       this.#gfx.fillStyle = 'black';
     }

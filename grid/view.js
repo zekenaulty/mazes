@@ -105,6 +105,7 @@ export class View extends Array {
       this[n].length = 0;
     }
     this.length = 0;
+    this.visited.length = 0;
 
     let scale = this.#cellScale(
       this.#roomCount,
@@ -210,10 +211,14 @@ export class View extends Array {
     }
   }
 
+  visited = [];
   move(dir) {
     if (!this.active.walls[dir]) {
+      let last = this.active;
+      this.visited.push(last);
       this.active = this.active.neighbors[dir];
-      this.draw();
+      last.draw('silver');
+      this.active.draw('silver');
     }
   }
 
