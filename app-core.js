@@ -34,8 +34,13 @@ go(() => {
   ];
 
   const generate = () => {
+    if(level === max_level){
+      alert(`WINNER!!! This device can only go to level ${max_level}! You\'ve WON!`);
+      level = 0;
+      rooms = 16;
+    }
     level++;
-    rooms = rooms + Math.floor(rooms * factor);
+    rooms = rooms + Math.ceil(rooms * factor);
     maze.resize(rooms);
     generators.sample()();
     maze.visited.push(maze.start);
@@ -52,16 +57,16 @@ go(() => {
   };
 
   const msg = () => {
-    _level.innerHTML = `
-    &nbsp;Level: ${level}<br />
-    &nbsp;Rooms: ${rooms}<br />
-    &nbsp;Rooms Visited: ${maze.visited.length}<br />
-    &nbsp;Moves Made: ${maze.moves}
+    _level.innerHTML = ` Level:         ${level}
+ Rooms:         ${maze.roomCount}
+ Rooms Visited: ${maze.visited.length}
+ Moves Made:    ${maze.moves}
+ End Point:     ${maze.end.row},${maze.end.column}
     `;
   };
 
   const view = stage.firstElementChild;
-  
+  const max_level = 40;
 /*
   view.addEventListener(
     'click',

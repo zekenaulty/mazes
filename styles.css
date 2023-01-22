@@ -9,7 +9,7 @@ body {
   top: 10vh;
   left: 5vw;
   width: 90vw;
-  height: 80vh;
+  height: 70vh;
   /*
   background-color: black;
   border: 1px solid black;
@@ -23,14 +23,15 @@ body {
   height: 10vh;
   width: 100vw;
   color: silver;
-  font-size: small;
+  font-size: 0.8em;
+  line-height: 1em;
+  font-family: monospace;
 
 }
 
-
 .foot {
   position: fixed;
-  top: 90vh;
+  top: 80vh;
   left: 0vw;
   height: 10vh;
   width: 100vw;
@@ -40,7 +41,7 @@ body {
 
 .up {
   position: fixed;
-  top: 90vh;
+  top: 80vh;
   left: 25vw;
   width: 50vw;
   height: 5vh;
@@ -48,7 +49,7 @@ body {
 
 .down {
   position: fixed;
-  top: 95vh;
+  top: 85vh;
   left: 25vw;
   width: 50vw;
   height: 5vh;
@@ -56,7 +57,7 @@ body {
 
 .left {
   position: fixed;
-  top: 90vh;
+  top: 80vh;
   left: 0vw;
   width: 25vw;
   height: 10vh;
@@ -64,7 +65,7 @@ body {
 
 .right {
   position: fixed;
-  top: 90vh;
+  top: 80vh;
   left: 75vw;
   width: 25vw;
   height: 10vh;

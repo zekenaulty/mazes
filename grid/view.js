@@ -8,7 +8,7 @@ export class View extends Array {
   #stage = undefined;
   #canvas = undefined;
   #gfx = undefined;
-  #roomCount = 0;
+  roomCount = 0;
   #created = false;
   columns = 0;
   rows = 0;
@@ -22,13 +22,13 @@ export class View extends Array {
   active = undefined;
   visited = [];
   moves = 0;
-  wallColor = 'silver';
+  wallColor = 'orange';
   floorColor = 'black';
-  startColor = 'silver';
+  startColor = 'white';
   endColorOne = 'green';
-  endColorTwo = 'black';
-  pathColor = 'teal';
-  activeColor = 'cornflowerblue';
+  endColorTwo = 'white';
+  pathColor = 'white';
+  activeColor = 'red';
 
   constructor(stage, roomCount) {
 
@@ -38,7 +38,7 @@ export class View extends Array {
       return;
     }
 
-    this.#roomCount = roomCount;
+    this.roomCount = roomCount;
     this.#stage = stage;
     this.#createCanvas();
     this.#init();
@@ -46,7 +46,7 @@ export class View extends Array {
   }
 
   resize(roomCount) {
-    this.#roomCount = roomCount;
+    this.roomCount = roomCount;
     this.length = 0;
     this.#populate();
     this.#init();
@@ -65,7 +65,7 @@ export class View extends Array {
   }
 
   /*  https://math.stackexchange.com/questions/466198/algorithm-to-get-the-maximum-size-of-n-squares-that-fit-into-a-rectangle-with-a/466248#466248 */
-  #cellScale = function(n, w, h)
+  cellScale = function(n, w, h)
   {
 
     let sw, sh;
@@ -104,12 +104,12 @@ export class View extends Array {
     this.visited.length = 0;
     this.moves = 0;
 
-    let scale = this.#cellScale(
-      this.#roomCount,
+    let scale = this.cellScale(
+      this.roomCount,
       this.#canvas.offsetWidth,
       this.#canvas.offsetHeight);
 
-    /* Math.floor(this.#roomCount / scale); */
+    /* Math.floor(this.roomCount / scale); */
     let perRow = 1;
     while ((perRow + 1) * scale < this.#canvas.width) {
       perRow++;
@@ -123,6 +123,8 @@ export class View extends Array {
     }
     this.rows = rowCount;
     this.height = this.rows * scale;
+    
+    this.roomCount = perRow * rowCount;
 
     this.ox = Math.floor((this.#canvas.offsetWidth - (perRow * scale)) / 2);
     this.oy = Math.floor((this.#canvas.offsetHeight - (rowCount * scale)) / 2);
