@@ -23,6 +23,8 @@ body {
   height: 10vh;
   width: 100vw;
   color: silver;
+  font-size: small;
+
 }
 
 
@@ -34,4 +36,52 @@ body {
   width: 100vw;
   text-align: center;
   vertical-align: bottom;
+}
+
+.up {
+  position: fixed;
+  top: 90vh;
+  left: 25vw;
+  width: 50vw;
+  height: 5vh;
+}
+
+.down {
+  position: fixed;
+  top: 95vh;
+  left: 25vw;
+  width: 50vw;
+  height: 5vh;
+}
+
+.left {
+  position: fixed;
+  top: 90vh;
+  left: 0vw;
+  width: 25vw;
+  height: 10vh;
+}
+
+.right {
+  position: fixed;
+  top: 90vh;
+  left: 75vw;
+  width: 25vw;
+  height: 10vh;
+}
+
+.skip {
+  position: fixed;
+  left: 74vw;
+  width: 25vw;
+  height: 3vh;
+  top: 1vh;
+}
+
+.reset {
+  position: fixed;
+  left: 74vw;
+  width: 25vw;
+  height: 3vh;
+  top: 4vh;
 }

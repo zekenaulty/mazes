@@ -8,9 +8,9 @@ export class Row extends Array {
     this.parent = parent;
   }
 
-  draw(style) {
+  draw() {
     for (let i = 0; i < this.length; i++) {
-      this[i].draw(style);
+      this[i].draw();
     }
   }
 

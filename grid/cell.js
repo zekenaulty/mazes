@@ -139,13 +139,13 @@ export class Cell extends Array {
   draw(style) {
 
     if (this.root.start === this) {
-      this.#gfx.fillStyle = 'blue';
+      this.#gfx.fillStyle = this.root.startColor;
     } else if (this.root.end === this) {
-      this.#gfx.fillStyle = 'green';
+      this.#gfx.fillStyle = this.root.endColorOne;
     } else if (this.root.visited.includes(this)) {
-      this.#gfx.fillStyle = 'cornflowerblue';
+      this.#gfx.fillStyle = this.root.pathColor;
     } else {
-      this.#gfx.fillStyle = 'black';
+      this.#gfx.fillStyle = this.root.floorColor;
     }
 
     this.#gfx.beginPath();
@@ -159,7 +159,7 @@ export class Cell extends Array {
 
     if (this.root.active === this) {
       this.#gfx.beginPath();
-      this.#gfx.fillStyle = 'red';
+      this.#gfx.fillStyle = this.root.activeColor;
       this.#gfx.rect(
         this.x,
         this.y,
@@ -170,19 +170,19 @@ export class Cell extends Array {
     }
 
     if (this.walls.north) {
-      this.lines.north.draw(style);
+      this.lines.north.draw(this.root.wallColor);
     }
 
     if (this.walls.east) {
-      this.lines.east.draw(style);
+      this.lines.east.draw(this.root.wallColor);
     }
 
     if (this.walls.south) {
-      this.lines.south.draw(style);
+      this.lines.south.draw(this.root.wallColor);
     }
 
     if (this.walls.west) {
-      this.lines.west.draw(style);
+      this.lines.west.draw(this.root.wallColor);
     }
 
   }

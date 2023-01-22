@@ -25,15 +25,12 @@ go(() => {
   const sidewinder = new Sidewinder(maze);
 
   const generators = [
-    () => {
+   /* () => {
       binary.generate();
-      _level.innerHTML = `${level}, <span style="font-size:small;">${binary.name}: ${binary.description}</span>`;
-
-    },
+    }, */
     () => {
       sidewinder.generate();
-      _level.innerHTML = `${level}, <span style="font-size:small;">${sidewinder.name}: ${sidewinder.description}</span>`;
-      },
+    },
   ];
 
   const generate = () => {
@@ -41,7 +38,9 @@ go(() => {
     rooms = rooms + Math.floor(rooms * factor);
     maze.resize(rooms);
     generators.sample()();
+    maze.visited.push(maze.start);
     maze.draw();
+    msg();
   };
 
   const move = (dir) => {
@@ -49,10 +48,21 @@ go(() => {
     if (maze.active === maze.end) {
       generate();
     }
+    msg();
+  };
+
+  const msg = () => {
+    _level.innerHTML = `
+    &nbsp;Level: ${level}<br />
+    &nbsp;Rooms: ${rooms}<br />
+    &nbsp;Rooms Visited: ${maze.visited.length}<br />
+    &nbsp;Moves Made: ${maze.moves}
+    `;
   };
 
   const view = stage.firstElementChild;
-
+  
+/*
   view.addEventListener(
     'click',
     (e) => {
@@ -75,21 +85,68 @@ go(() => {
         move('south');
       }
     });
+*/
+
+/*
+  view.addEventListener(
+    'touchstart',
+    (e, n) => {
+      maze.fill();
+    });
 
   view.addEventListener(
-    'swipe',
-    (e) => {
-      console.log(e);
+    'touchmove',
+    (e, n) => {
+      let colors = [
+        'red',
+        'yellow',
+        'orange',
+        'cyan',
+        'magenta'
+        ];
+      for (let i = 0; i < e.touches.length; i++) {
+        let t = e.touches[i];
+        maze.trace(t.clientX, t.clientY, colors[i]);
+      }
     });
-  document.querySelector('.g').addEventListener('click', () => {
+
+  view.addEventListener(
+    'touchend',
+    (e, n) => {});
+  
+  */
+    
+  document.querySelector('.skip').addEventListener('click', () => {
     generate();
   });
-  document.querySelector('.d').addEventListener('click', () => {
+
+  document.querySelector('.reset').addEventListener('click', () => {
+    maze.visited.length = 0;
+    maze.moves = 0;
     maze.active = maze.start;
     maze.draw();
   });
-  document.querySelector('.f').addEventListener('click', () => {
-    maze.fill();
+
+  const lb = document.querySelector('.left');
+  const rb = document.querySelector('.right');
+  const ub = document.querySelector('.up');
+  const db = document.querySelector('.down');
+
+  lb.addEventListener('click', () => {
+    move('west');
   });
+
+  ub.addEventListener('click', () => {
+    move('north');
+  });
+
+  db.addEventListener('click', () => {
+    move('south');
+  });
+
+  rb.addEventListener('click', () => {
+    move('east');
+  });
+
   generate();
 });

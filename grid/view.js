@@ -20,14 +20,15 @@ export class View extends Array {
   start = undefined;
   end = undefined;
   active = undefined;
-
-  beginDrawing() {
-    this.drawing++;
-  }
-
-  endDrawing() {
-    this.drawing--;
-  }
+  visited = [];
+  moves = 0;
+  wallColor = 'silver';
+  floorColor = 'black';
+  startColor = 'silver';
+  endColorOne = 'green';
+  endColorTwo = 'black';
+  pathColor = 'teal';
+  activeColor = 'cornflowerblue';
 
   constructor(stage, roomCount) {
 
@@ -38,7 +39,6 @@ export class View extends Array {
     }
 
     this.#roomCount = roomCount;
-
     this.#stage = stage;
     this.#createCanvas();
     this.#init();
@@ -93,10 +93,6 @@ export class View extends Array {
         this.#populate();
         this.#created = true;
       }
-
-      //this.#fill();
-      //this.#drawGrid();
-
     }
   }
 
@@ -106,6 +102,7 @@ export class View extends Array {
     }
     this.length = 0;
     this.visited.length = 0;
+    this.moves = 0;
 
     let scale = this.#cellScale(
       this.#roomCount,
@@ -172,7 +169,7 @@ export class View extends Array {
     this.#gfx.lineWidth = 1;
     this.#fill();
     for (let i = 0; i < this.length; i++) {
-      this[i].draw('silver');
+      this[i].draw();
     }
   }
 
@@ -182,8 +179,8 @@ export class View extends Array {
 
   #fill() {
     this.#gfx.beginPath();
-    this.#gfx.fillStyle = 'black';
-    this.#gfx.strokeStyle = 'black';
+    this.#gfx.fillStyle = this.floorColor;
+    this.#gfx.strokeStyle = this.floorColor;
     this.#gfx.rect(
       0,
       0,
@@ -211,15 +208,30 @@ export class View extends Array {
     }
   }
 
-  visited = [];
   move(dir) {
     if (!this.active.walls[dir]) {
+      this.moves++;
       let last = this.active;
-      this.visited.push(last);
+      if(!this.visited.includes(last)){
+        this.visited.push(last);
+      }
       this.active = this.active.neighbors[dir];
-      last.draw('silver');
-      this.active.draw('silver');
+      last.draw();
+      this.active.draw();
     }
   }
 
+trace(x,y,c) {
+    this.#gfx.beginPath();
+    this.#gfx.fillStyle = c;
+    this.#gfx.strokeStyle = c;
+    this.#gfx.rect(
+      x,
+      y,
+      3,
+      3);
+    this.#gfx.fill();
+    this.#gfx.stroke();
+    this.#gfx.closePath();
+  }
 }
