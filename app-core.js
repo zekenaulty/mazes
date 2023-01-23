@@ -133,6 +133,7 @@ go(() => {
   const skip = document.querySelector('.skip');
   const solve = document.querySelector('.solve');
   const reset = document.querySelector('.reset');
+  const histogram = document.querySelector('.histogram');
 
   const disable = () => {
     left.disabled = true;
@@ -142,6 +143,7 @@ go(() => {
     skip.disabled = true;
     solve.disabled = true;
     reset.disabled = true;
+    histogram.disabled = true;
   };
 
   const enable = () => {
@@ -152,10 +154,16 @@ go(() => {
     skip.disabled = false;
     solve.disabled = false;
     reset.disabled = false;
+    histogram.disabled = false;
   };
 
   skip.addEventListener('click', () => {
     generate();
+  });
+  
+  histogram.addEventListener('click', () => {
+    maze.showDistance = !maze.showDistance;
+    maze.draw();
   });
 
   solve.addEventListener('click', () => {

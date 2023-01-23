@@ -20,6 +20,7 @@ export class View extends Array {
   oy = 0;
   start = undefined;
   end = undefined;
+  endDistance = 0;
   active = undefined;
   visited = [];
   moves = 0;
@@ -246,9 +247,20 @@ export class View extends Array {
     //this.distances = this.start.distances();
     this.solution = this.distances.pathTo(this.end);
     let t = 25;
-    for (let j = this.solution.length; j > -1; j--) {
+    for (let j = this.solution.length - 1; j > -1; j--) {
       setTimeout(() => { this.solution[j].draw(); }, t);
       t += 25;
     }
+  }
+  
+  setup() {
+    
+    this.start = this.sample().sample();
+    this.distances = this.start.distances();
+    let d = this.distances.max();
+    this.end = d.cell;
+    this.endDistance = d.distance;
+    this.active = this.start;
+    
   }
 }

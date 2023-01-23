@@ -94,3 +94,11 @@ body {
   height: 3vh;
   top: 7vh;
 }
+
+.histogram {
+   position: fixed;
+   left: 48vw;
+   width: 25vw;
+   height: 3vh;
+   top: 1vh;
+ }

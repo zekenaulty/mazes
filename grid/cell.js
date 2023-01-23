@@ -138,22 +138,26 @@ export class Cell extends Array {
       this.lines.west.draw(this.root.wallColor);
     }
 
-    if (this.root.distances && this.root.distances.length > 0 && this.root.showDistance) {
-      this.#gfx.font = '1.2em monospace';
-      this.#gfx.fillStyle = this.root.wallColor;
-      this.#gfx.fillText(
-        this.root.distances.distance(this),
-        this.x + 2,
-        this.y + 16,
-        this.scale - 2);
+    const normalize = (value, min, max) => {
+      let normalized = (value - min) / (max - min);
+      return normalized;
+    };
+
+    if (this.root.showDistance &&
+      this.root.start !== this &&
+      this.root.end !== this &&
+      this.root.active !== this
+      ) {
+      let a = normalize(this.root.distances.distance(this), 0, this.root.endDistance);
+      floor.fillColor = `rgba(100,0,200,${a})`;
+      console.log(`${this.key} ${floor.fillColor}`);
+      floor.draw();
     }
-
-
 
   }
 
   get key() {
-    return `_${this.row}_${this.column}`;
+    return `${this.row},${this.column}`;
   }
 
   link(cell, bi) {
@@ -226,10 +230,8 @@ export class Cell extends Array {
           let linked = cell.links[j];
           let d = result.distance(cell) + 1;
           if (result.includes(linked)) {
-            console.log('continue');
             continue;
           }
-          console.log(`${linked.key}, ${d}`);
           result.collect(linked, d);
           newFrontier.push(linked);
         }
@@ -242,7 +244,6 @@ export class Cell extends Array {
       frontier = newFrontier;
     }
 
-    console.log(result.length);
     return result;
   }
 }
