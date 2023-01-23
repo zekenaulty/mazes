@@ -36,6 +36,24 @@ export class Distance extends Array {
     }
     return breadcrumbs;
   }
+
+  max() {
+    let maxDistance = 0;
+    let maxCell = this.root;
+    for (let i = 0; i < this.length; i++) {
+      let c = this[i];
+      let d = this.distance(c);
+      if (d > maxDistance) {
+        maxCell = c;
+        maxDistance = d;
+      }
+    }
+
+    return {
+      cell: maxCell,
+      distance: maxDistance
+    };
+  }
 }
 
 export class Links extends Array {

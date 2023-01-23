@@ -34,11 +34,8 @@ export class Sidewinder {
     }
 
     this.view.start = this.view.sample().sample();
-    this.view.end = this.view.sample().sample();
-    while (this.view.start === this.view.end) {
-      this.view.end = this.view.sample().sample();
-    }
     this.view.distances = this.view.start.distances();
+    this.view.end = this.view.distances.max().cell;
     this.view.active = this.view.start;
 
   }
