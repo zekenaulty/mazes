@@ -8,7 +8,7 @@ export class Wilsons {
   }
 
   generate() {
-    this.view.maxScale = 18;
+    this.view.maxScale = 15;
     this.view.resize(this.view.roomCount);
     
     let unvisited = this.view.toArray();

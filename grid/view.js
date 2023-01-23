@@ -224,6 +224,7 @@ export class View extends Array {
         this.visited.push(last);
       }
       this.active = this.active.neighbors[dir];
+      this.allCells = this.toArray();
       last.draw();
       this.active.draw();
     }
