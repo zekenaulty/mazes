@@ -1,42 +1,4 @@
-export class Line {
-  x1 = 0;
-  y1 = 0;
-  x2 = 0;
-  y2 = 0;
-  #gfx = undefined;
-
-  constructor(x1, y1, x2, y2, gfx) {
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
-    this.#gfx = gfx;
-  }
-
-  draw(style) {
-    let exec = () => {
-
-
-      this.#gfx.beginPath();
-      this.#gfx.moveTo(this.x1, this.y1);
-      this.#gfx.lineTo(this.x2, this.y2);
-      this.#gfx.closePath();
-      this.#gfx.strokeStyle = style;
-      this.#gfx.stroke();
-      this.#gfx.closePath();
-    };
-
-    //setTimeout(() => { exec(); }, 10);
-    exec();
-  }
-}
-
-export class DirectionData {
-  north = undefined;
-  east = undefined;
-  south = undefined;
-  west = undefined;
-}
+import { Distance, DirectionData, Line, Links, Rectangle } from '../common.js';
 
 export class Cell extends Array {
 
@@ -55,7 +17,7 @@ export class Cell extends Array {
   lines = new DirectionData();
   ox = 0;
   oy = 0;
-  links = {};
+  links = new Links();
 
   constructor(
     root,
@@ -138,89 +100,25 @@ export class Cell extends Array {
 
   draw(style) {
 
-    if (this.root.start === this) {
-      this.#gfx.fillStyle = this.root.startColor;
+    let color = this.root.floorColor;
+    if (this.root.active === this) {
+      color = this.root.activeColor;
     } else if (this.root.end === this) {
-      this.#gfx.fillStyle = this.root.endColorOne;
+      color = this.root.endColorOne;
     } else if (this.root.visited.includes(this)) {
-      this.#gfx.fillStyle = this.root.pathColor;
-    } else {
-      this.#gfx.fillStyle = this.root.floorColor;
+      color = this.root.pathColor;
+    } else if (this.root.start === this) {
+      color = this.root.startColor;
     }
-    /*
-        if (this.root.end === this) {
-          let sq = 32;
-          let size = this.root.cellScale(sq, this.scale, this.scale);
-          let perRow = 1;
-          while ((perRow + 1) * size < this.scale) {
-            perRow++;
-          }
-          let rowCount = 1;
-          while ((rowCount + 1) * size < this.scale) {
-            rowCount++;
-          }
-          let colors = [
-            this.root.endColorOne,
-            this.root.endColorTwo
-          ];
-          let colorIdx = 0;
-          for (let r = 0; r < rowCount; r++) {
-            if (r % 2 === 0) {
-              colorIdx = 1;
-            } else {
-              colorIdx = 0;
-            }
-            for (let c = 0; c < perRow; c++) {
-              this.#gfx.fillStyle = colors[colorIdx];
-              this.#gfx.beginPath();
-              let x = this.x + (size * c);
-              let y = this.y + (size * r);
-              this.#gfx.rect(
-                x,
-                y,
-                size,
-                size);
-              this.#gfx.fill();
-              this.#gfx.closePath();
-              if (colorIdx === 0) {
-                colorIdx = 1;
-              } else {
-                colorIdx = 0;
-              }
-            }
-          }
-        } else {
-          this.#gfx.beginPath();
-          this.#gfx.rect(
-            this.x,
-            this.y,
-            this.scale,
-            this.scale);
-          this.#gfx.fill();
-          this.#gfx.closePath();
-        }
-        */
 
-    this.#gfx.beginPath();
-    this.#gfx.rect(
+    let floor = new Rectangle(
       this.x,
       this.y,
       this.scale,
-      this.scale);
-    this.#gfx.fill();
-    this.#gfx.closePath();
-
-    if (this.root.active === this) {
-      this.#gfx.beginPath();
-      this.#gfx.fillStyle = this.root.activeColor;
-      this.#gfx.rect(
-        this.x,
-        this.y,
-        this.scale,
-        this.scale);
-      this.#gfx.fill();
-      this.#gfx.closePath();
-    }
+      this.scale,
+      color,
+      this.#gfx);
+    floor.draw();
 
     if (this.walls.north) {
       this.lines.north.draw(this.root.wallColor);
@@ -238,6 +136,16 @@ export class Cell extends Array {
       this.lines.west.draw(this.root.wallColor);
     }
 
+    if (this.root.showDistance) {
+      this.#gfx.font = '1.2em monospace';
+      this.#gfx.fillStyle = this.root.wallColor;
+      this.#gfx.fillText(
+        this.root.distances.distance(this),
+        this.x + 2,
+        this.y + 16,
+        this.scale - 2);
+    }
+
   }
 
   get key() {
@@ -249,7 +157,7 @@ export class Cell extends Array {
       return;
     }
 
-    this.links[cell.key] = true;
+    this.links.push(cell);
 
     if (bi) {
       cell.link(this, false);
@@ -261,7 +169,7 @@ export class Cell extends Array {
       return;
     }
 
-    delete this.links[cell.key];
+    this.links.remove(cell);
     if (bi) {
       cell.unlink(this, false);
     }
@@ -300,5 +208,37 @@ export class Cell extends Array {
     return true;
   }
 
+  distances() {
+    let result = new Distance(this);
+    let frontier = new Array();
+    frontier.push(this);
 
+    while (true) {
+      let newFrontier = new Array();
+
+      for (let i = 0; i < frontier.length; i++) {
+        let cell = frontier[i];
+        for (let j = 0; j < cell.links.length; j++) {
+          let linked = cell.links[j];
+          let d = result.distance(cell) + 1;
+          if (result.includes(linked)) {
+            console.log('continue');
+            continue;
+          }
+          console.log(`${linked.key}, ${d}`);
+          result.collect(linked, d);
+          newFrontier.push(linked);
+        }
+      }
+
+      if (newFrontier.length < 1) {
+        break;
+      }
+
+      frontier = newFrontier;
+    }
+
+    console.log(result.length);
+    return result;
+  }
 }

@@ -29,6 +29,8 @@ export class View extends Array {
   endColorTwo = 'white';
   pathColor = 'white';
   activeColor = 'red';
+  showDistance = false;
+  distances = undefined;
 
   constructor(stage, roomCount) {
 
