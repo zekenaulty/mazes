@@ -6,10 +6,10 @@ body {
 
 .stage {
   position: fixed;
-  top: 10vh;
+  top: 12vh;
   left: 5vw;
   width: 90vw;
-  height: 70vh;
+  height: 66vh;
   /*
   background-color: black;
   border: 1px solid black;
