@@ -34,7 +34,8 @@ go(() => {
   ];
 
   const generate = () => {
-    if(level === max_level){
+    disable();
+    if (level === max_level) {
       alert(`WINNER!!! This device can only go to level ${max_level}! You\'ve WON!`);
       level = 0;
       rooms = 16;
@@ -46,14 +47,18 @@ go(() => {
     maze.visited.push(maze.start);
     maze.draw();
     msg();
+    enable();
   };
 
   const move = (dir) => {
+    disable();
     maze.move(dir);
     if (maze.active === maze.end) {
       generate();
+    } else {
+      msg();
     }
-    msg();
+    enable();
   };
 
   const msg = () => {
@@ -67,92 +72,124 @@ go(() => {
 
   const view = stage.firstElementChild;
   const max_level = 40;
-/*
-  view.addEventListener(
-    'click',
-    (e) => {
-      const westly = view.width / 4;
-      const eastly = westly * 3;
-      const northly = view.height / 4;
-      const southly = northly * 3;
+  /*
+    view.addEventListener(
+      'click',
+      (e) => {
+        const westly = view.width / 4;
+        const eastly = westly * 3;
+        const northly = view.height / 4;
+        const southly = northly * 3;
 
-      if (e.clientX < westly &&
-        e.clientY > northly &&
-        e.clientY < southly) {
-        move('west');
-      } else if (e.clientX > eastly &&
-        e.clientY > northly &&
-        e.clientY < southly) {
-        move('east');
-      } else if (e.clientY < northly) {
-        move('north');
-      } else if (e.clientY > southly) {
-        move('south');
-      }
-    });
-*/
-
-/*
-  view.addEventListener(
-    'touchstart',
-    (e, n) => {
-      maze.fill();
-    });
-
-  view.addEventListener(
-    'touchmove',
-    (e, n) => {
-      let colors = [
-        'red',
-        'yellow',
-        'orange',
-        'cyan',
-        'magenta'
-        ];
-      for (let i = 0; i < e.touches.length; i++) {
-        let t = e.touches[i];
-        maze.trace(t.clientX, t.clientY, colors[i]);
-      }
-    });
-
-  view.addEventListener(
-    'touchend',
-    (e, n) => {});
-  
+        if (e.clientX < westly &&
+          e.clientY > northly &&
+          e.clientY < southly) {
+          move('west');
+        } else if (e.clientX > eastly &&
+          e.clientY > northly &&
+          e.clientY < southly) {
+          move('east');
+        } else if (e.clientY < northly) {
+          move('north');
+        } else if (e.clientY > southly) {
+          move('south');
+        }
+      });
   */
+
+  /*
+    view.addEventListener(
+      'touchstart',
+      (e, n) => {
+        maze.fill();
+      });
+
+    view.addEventListener(
+      'touchmove',
+      (e, n) => {
+        let colors = [
+          'red',
+          'yellow',
+          'orange',
+          'cyan',
+          'magenta'
+          ];
+        for (let i = 0; i < e.touches.length; i++) {
+          let t = e.touches[i];
+          maze.trace(t.clientX, t.clientY, colors[i]);
+        }
+      });
+
+    view.addEventListener(
+      'touchend',
+      (e, n) => {});
     
-  document.querySelector('.skip').addEventListener('click', () => {
+    */
+
+  const left = document.querySelector('.left');
+  const right = document.querySelector('.right');
+  const up = document.querySelector('.up');
+  const down = document.querySelector('.down');
+  const skip = document.querySelector('.skip');
+  const solve = document.querySelector('.solve');
+  const reset = document.querySelector('.reset');
+
+  const disable = () => {
+    left.disabled = true;
+    right.disabled = true;
+    up.disabled = true;
+    down.disabled = true;
+    skip.disabled = true;
+    solve.disabled = true;
+    reset.disabled = true;
+  };
+
+  const enable = () => {
+    left.disabled = false;
+    right.disabled = false;
+    up.disabled = false;
+    down.disabled = false;
+    skip.disabled = false;
+    solve.disabled = false;
+    reset.disabled = false;
+  };
+
+  skip.addEventListener('click', () => {
     generate();
   });
 
-  document.querySelector('.reset').addEventListener('click', () => {
+  solve.addEventListener('click', () => {
+    disable();
+    maze.solve();
+    enable();
+  });
+
+  reset.addEventListener('click', () => {
+    disable();
     maze.visited.length = 0;
     maze.moves = 0;
     maze.active = maze.start;
+    maze.solution = undefined;
     maze.draw();
+    enable();
   });
 
-  const lb = document.querySelector('.left');
-  const rb = document.querySelector('.right');
-  const ub = document.querySelector('.up');
-  const db = document.querySelector('.down');
-
-  lb.addEventListener('click', () => {
+  left.addEventListener('click', () => {
     move('west');
   });
 
-  ub.addEventListener('click', () => {
+  up.addEventListener('click', () => {
     move('north');
   });
 
-  db.addEventListener('click', () => {
+  down.addEventListener('click', () => {
     move('south');
   });
 
-  rb.addEventListener('click', () => {
+  right.addEventListener('click', () => {
     move('east');
   });
 
   generate();
-  
+
 });

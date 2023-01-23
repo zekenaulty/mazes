@@ -1,6 +1,7 @@
 import { go } from '../isReady.js';
 import { Cell } from './cell.js';
 import { Row } from './row.js';
+import { Distance, DirectionData, Line, Links, Rectangle } from '../common.js';
 
 export class View extends Array {
 
@@ -29,8 +30,10 @@ export class View extends Array {
   endColorTwo = 'white';
   pathColor = 'white';
   activeColor = 'red';
+  solveColor = 'cornflowerblue';
   showDistance = false;
   distances = undefined;
+  solution = undefined;
 
   constructor(stage, roomCount) {
 
@@ -125,7 +128,7 @@ export class View extends Array {
     }
     this.rows = rowCount;
     this.height = this.rows * scale;
-    
+
     this.roomCount = perRow * rowCount;
 
     this.ox = Math.floor((this.#canvas.offsetWidth - (perRow * scale)) / 2);
@@ -216,7 +219,7 @@ export class View extends Array {
     if (!this.active.walls[dir]) {
       this.moves++;
       let last = this.active;
-      if(!this.visited.includes(last)){
+      if (!this.visited.includes(last)) {
         this.visited.push(last);
       }
       this.active = this.active.neighbors[dir];
@@ -225,7 +228,7 @@ export class View extends Array {
     }
   }
 
-trace(x,y,c) {
+  trace(x, y, c) {
     this.#gfx.beginPath();
     this.#gfx.fillStyle = c;
     this.#gfx.strokeStyle = c;
@@ -237,5 +240,15 @@ trace(x,y,c) {
     this.#gfx.fill();
     this.#gfx.stroke();
     this.#gfx.closePath();
+  }
+
+  solve() {
+    //this.distances = this.start.distances();
+    this.solution = this.distances.pathTo(this.end);
+    let t = 25;
+    for (let j = this.solution.length; j > -1; j--) {
+      setTimeout(() => { this.solution[j].draw(); }, t);
+      t += 25;
+    }
   }
 }

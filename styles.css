@@ -86,3 +86,11 @@ body {
   height: 3vh;
   top: 4vh;
 }
+
+.solve {
+  position: fixed;
+  left: 74vw;
+  width: 25vw;
+  height: 3vh;
+  top: 7vh;
+}

@@ -16,11 +16,26 @@ export class Distance extends Array {
     this.distances[cell.key] = distance;
     this.push(cell);
   }
-  
-  distance(cell){
+
+  distance(cell) {
     return this.distances[cell.key];
   }
 
+  pathTo(cell) {
+    let current = cell;
+    let breadcrumbs = new Distance(this.root);
+    while (current !== this.root) {
+      for (let i = 0; i < current.links.length; i++) {
+        let neighbor = current.links[i];
+        if (this.distance(neighbor) < this.distance(current)) {
+          breadcrumbs.collect(neighbor, this.distance(neighbor));
+          current = neighbor;
+          break;
+        }
+      }
+    }
+    return breadcrumbs;
+  }
 }
 
 export class Links extends Array {
@@ -109,56 +124,56 @@ export class DirectionData {
   west = undefined;
 }
 
-    /*
-        if (this.root.end === this) {
-          let sq = 32;
-          let size = this.root.cellScale(sq, this.scale, this.scale);
-          let perRow = 1;
-          while ((perRow + 1) * size < this.scale) {
-            perRow++;
-          }
-          let rowCount = 1;
-          while ((rowCount + 1) * size < this.scale) {
-            rowCount++;
-          }
-          let colors = [
-            this.root.endColorOne,
-            this.root.endColorTwo
-          ];
-          let colorIdx = 0;
-          for (let r = 0; r < rowCount; r++) {
-            if (r % 2 === 0) {
-              colorIdx = 1;
-            } else {
-              colorIdx = 0;
-            }
-            for (let c = 0; c < perRow; c++) {
-              this.#gfx.fillStyle = colors[colorIdx];
-              this.#gfx.beginPath();
-              let x = this.x + (size * c);
-              let y = this.y + (size * r);
-              this.#gfx.rect(
-                x,
-                y,
-                size,
-                size);
-              this.#gfx.fill();
-              this.#gfx.closePath();
-              if (colorIdx === 0) {
-                colorIdx = 1;
-              } else {
-                colorIdx = 0;
-              }
-            }
-          }
+/*
+    if (this.root.end === this) {
+      let sq = 32;
+      let size = this.root.cellScale(sq, this.scale, this.scale);
+      let perRow = 1;
+      while ((perRow + 1) * size < this.scale) {
+        perRow++;
+      }
+      let rowCount = 1;
+      while ((rowCount + 1) * size < this.scale) {
+        rowCount++;
+      }
+      let colors = [
+        this.root.endColorOne,
+        this.root.endColorTwo
+      ];
+      let colorIdx = 0;
+      for (let r = 0; r < rowCount; r++) {
+        if (r % 2 === 0) {
+          colorIdx = 1;
         } else {
+          colorIdx = 0;
+        }
+        for (let c = 0; c < perRow; c++) {
+          this.#gfx.fillStyle = colors[colorIdx];
           this.#gfx.beginPath();
+          let x = this.x + (size * c);
+          let y = this.y + (size * r);
           this.#gfx.rect(
-            this.x,
-            this.y,
-            this.scale,
-            this.scale);
+            x,
+            y,
+            size,
+            size);
           this.#gfx.fill();
           this.#gfx.closePath();
+          if (colorIdx === 0) {
+            colorIdx = 1;
+          } else {
+            colorIdx = 0;
+          }
         }
-        */
+      }
+    } else {
+      this.#gfx.beginPath();
+      this.#gfx.rect(
+        this.x,
+        this.y,
+        this.scale,
+        this.scale);
+      this.#gfx.fill();
+      this.#gfx.closePath();
+    }
+    */

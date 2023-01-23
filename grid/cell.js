@@ -109,6 +109,8 @@ export class Cell extends Array {
       color = this.root.pathColor;
     } else if (this.root.start === this) {
       color = this.root.startColor;
+    } else if (this.root.solution && this.root.solution.length > 0 && this.root.solution.includes(this)) {
+      color = this.root.solveColor;
     }
 
     let floor = new Rectangle(
@@ -136,7 +138,7 @@ export class Cell extends Array {
       this.lines.west.draw(this.root.wallColor);
     }
 
-    if (this.root.showDistance) {
+    if (this.root.distances && this.root.distances.length > 0 && this.root.showDistance) {
       this.#gfx.font = '1.2em monospace';
       this.#gfx.fillStyle = this.root.wallColor;
       this.#gfx.fillText(
@@ -145,6 +147,8 @@ export class Cell extends Array {
         this.y + 16,
         this.scale - 2);
     }
+
+
 
   }
 

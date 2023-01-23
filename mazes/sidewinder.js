@@ -38,7 +38,7 @@ export class Sidewinder {
     while (this.view.start === this.view.end) {
       this.view.end = this.view.sample().sample();
     }
-
+    this.view.distances = this.view.start.distances();
     this.view.active = this.view.start;
 
   }
