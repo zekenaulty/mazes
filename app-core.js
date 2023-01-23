@@ -72,59 +72,6 @@ go(() => {
 
   const view = stage.firstElementChild;
   const max_level = 40;
-  /*
-    view.addEventListener(
-      'click',
-      (e) => {
-        const westly = view.width / 4;
-        const eastly = westly * 3;
-        const northly = view.height / 4;
-        const southly = northly * 3;
-
-        if (e.clientX < westly &&
-          e.clientY > northly &&
-          e.clientY < southly) {
-          move('west');
-        } else if (e.clientX > eastly &&
-          e.clientY > northly &&
-          e.clientY < southly) {
-          move('east');
-        } else if (e.clientY < northly) {
-          move('north');
-        } else if (e.clientY > southly) {
-          move('south');
-        }
-      });
-  */
-
-  /*
-    view.addEventListener(
-      'touchstart',
-      (e, n) => {
-        maze.fill();
-      });
-
-    view.addEventListener(
-      'touchmove',
-      (e, n) => {
-        let colors = [
-          'red',
-          'yellow',
-          'orange',
-          'cyan',
-          'magenta'
-          ];
-        for (let i = 0; i < e.touches.length; i++) {
-          let t = e.touches[i];
-          maze.trace(t.clientX, t.clientY, colors[i]);
-        }
-      });
-
-    view.addEventListener(
-      'touchend',
-      (e, n) => {});
-    
-    */
 
   const left = document.querySelector('.left');
   const right = document.querySelector('.right');
