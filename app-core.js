@@ -7,14 +7,21 @@ Array.prototype.sample = function() {
 
   return this[Math.floor(Math.random() * this.length)];
 };
+Array.prototype.delete = function(e) {
+  if (this.length === 0) return;
+  let idx = this.indexOf(e);
+  if (idx < 0) return;
+  this.splice(idx, 1);
+};
 
 import { Binary } from './mazes/binary.js';
 import { Sidewinder } from './mazes/sidewinder.js';
 import { AldousBroder } from './mazes/aldousBroder.js';
+import { Wilsons } from './mazes/wilsons.js';
 
 
 go(() => {
-
+  let mazeIndex = 0;
   let rooms = 16;
   let factor = 0.15;
   let level = 0;
@@ -25,25 +32,23 @@ go(() => {
   const binary = new Binary(maze);
   const sidewinder = new Sidewinder(maze);
   const aldousBroder = new AldousBroder(maze);
+  const wilsons = new Wilsons(maze);
 
   const generators = [
-   /* () => {
-      binary.generate();
-    }, 
-    () => {
-      sidewinder.generate();
-    */
-     () => {
-       aldousBroder.generate();
-     },
+      binary,
+      sidewinder,
+      aldousBroder,
+      wilsons
   ];
 
-  const generate = () => {
+  const generate = (stay) => {
     disable();
-    level++;
-    rooms = rooms + Math.ceil(rooms * factor);
+    if (!stay) {
+      level++;
+      rooms = rooms + Math.ceil(rooms * factor);
+    }
     maze.resize(rooms);
-    generators.sample()();
+    generators[mazeIndex].generate();
     maze.visited.push(maze.start);
     maze.draw();
     msg();
@@ -71,7 +76,6 @@ go(() => {
   };
 
   const view = stage.firstElementChild;
-
   const left = document.querySelector('.left');
   const right = document.querySelector('.right');
   const up = document.querySelector('.up');
@@ -80,6 +84,7 @@ go(() => {
   const solve = document.querySelector('.solve');
   const reset = document.querySelector('.reset');
   const histogram = document.querySelector('.histogram');
+  const mazes = document.querySelector('.mazes');
 
   const disable = () => {
     left.disabled = true;
@@ -106,7 +111,7 @@ go(() => {
   skip.addEventListener('click', () => {
     generate();
   });
-  
+
   histogram.addEventListener('click', () => {
     maze.showDistance = !maze.showDistance;
     maze.draw();
@@ -143,6 +148,19 @@ go(() => {
   right.addEventListener('click', () => {
     move('east');
   });
+
+  for (let g = 0; g < generators.length; g++) {
+    let o = new Option(generators[g].name);
+    mazes.add(o);
+  }
+
+  mazes.addEventListener('change', () => {
+    mazeIndex = mazes.selectedIndex;
+    generate(true);
+  });
+
+  mazeIndex = Math.floor(Math.random() * generators.length);
+  mazes.selectedIndex = mazeIndex;
 
   generate();
 

@@ -2,6 +2,15 @@ body {
   background-color: black;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
+  font-size: 0.8em;
+  line-height: 1em;
+  font-family: monospace;
+}
+
+button {
+  font-size: 0.8em;
+  line-height: 1em;
+  font-family: monospace;
 }
 
 .stage {
@@ -96,9 +105,21 @@ body {
 }
 
 .histogram {
-   position: fixed;
-   left: 48vw;
-   width: 25vw;
-   height: 3vh;
-   top: 1vh;
- }
+  position: fixed;
+  left: 48vw;
+  width: 25vw;
+  height: 3vh;
+  top: 1vh;
+}
+
+
+.mazes {
+  position: fixed;
+  left: 48vw;
+  width: 25vw;
+  height: 3vh;
+  top: 4vh;
+  font-size: 0.8em;
+  line-height: 1em;
+  font-family: monospace;
+}

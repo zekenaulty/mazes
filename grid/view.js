@@ -269,4 +269,15 @@ export class View extends Array {
     this.active = this.start;
     
   }
+  
+  toArray(){
+    let a = new Array();
+    for(let r = 0; r < this.length; r++){
+      for(let c = 0; c < this[r].length; c++){
+        a.push(this[r][c]);
+      }
+    }
+    return a;
+  }
+  
 }

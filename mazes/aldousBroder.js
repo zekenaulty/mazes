@@ -1,5 +1,5 @@
 export class AldousBroder {
-  name = 'AldousBroder';
+  name = 'Aldous Broder';
   description = '';
   view = undefined;
 
