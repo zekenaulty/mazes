@@ -8,7 +8,7 @@ export class AldousBroder {
   }
 
   generate() {
-    this.view.maxScale = 8;
+    this.view.maxScale = 5;
     this.view.resize(this.view.roomCount);
 
     let cell = this.view.sample().sample();

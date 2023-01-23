@@ -1,5 +1,5 @@
 export class Wilsons {
-  name = 'Wilsons (very slow, hangs on larger mazes)';
+  name = 'Wilsons (SLOW)';
   description = '';
   view = undefined;
 

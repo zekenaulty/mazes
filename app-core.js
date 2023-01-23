@@ -18,6 +18,7 @@ import { Binary } from './mazes/binary.js';
 import { Sidewinder } from './mazes/sidewinder.js';
 import { AldousBroder } from './mazes/aldousBroder.js';
 import { Wilsons } from './mazes/wilsons.js';
+import { HuntAndKill } from './mazes/huntAndKill.js';
 
 
 go(() => {
@@ -44,12 +45,14 @@ go(() => {
   const sidewinder = new Sidewinder(maze);
   const aldousBroder = new AldousBroder(maze);
   const wilsons = new Wilsons(maze);
+  const huntKill = new HuntAndKill(maze);
 
   const generators = [
       binary,
       sidewinder,
       aldousBroder,
-      wilsons
+      wilsons,
+      huntKill
   ];
 
   const generate = (stay) => {
@@ -189,7 +192,7 @@ go(() => {
     generate(true);
   });
 
-  mazeIndex = 2; //Math.floor(Math.random() * generators.length);
+  mazeIndex = 4; //Math.floor(Math.random() * generators.length);
   mazes.selectedIndex = mazeIndex;
 
   document.querySelector('.playerColor').style.backgroundColor = maze.activeColor;
