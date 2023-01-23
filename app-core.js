@@ -78,10 +78,11 @@ go(() => {
   };
 
   const msg = () => {
-    _level.innerHTML = `  Level:         ${level}
-  Rooms:         ${maze.roomCount}
-  Rooms Visited: ${maze.visited.length}
-  Moves Made:    ${maze.moves}
+    _level.innerHTML = `  
+      Level:         ${level} <br />
+      Rooms:         ${maze.roomCount} <br />
+      Rooms Visited: ${maze.visited.length} <br />
+      Moves Made:    ${maze.moves} <br />
     `;
   };
 
@@ -95,6 +96,9 @@ go(() => {
   const reset = document.querySelector('.reset');
   const histogram = document.querySelector('.histogram');
   const mazes = document.querySelector('.mazes');
+  const hand = document.querySelector('.hand');
+  const foot = document.querySelector('.foot');
+  const joy = document.querySelector('.move');
 
   const disable = () => {
     loader(true);
@@ -122,6 +126,20 @@ go(() => {
 
   skip.addEventListener('click', () => {
     generate();
+  });
+
+  hand.addEventListener('click', () => {
+    if(hand.innerHTML === '&lt;') {
+      foot.style.justifyContent = 'start';
+      joy.style.order = 1;
+      hand.style.order = 2;
+      hand.innerHTML = '&gt;';
+    } else {
+      foot.style.justifyContent = 'end';
+      hand.style.order = 1;
+      joy.style.order = 2;
+      hand.innerHTML = '&lt;';
+    }
   });
 
   histogram.addEventListener('click', () => {

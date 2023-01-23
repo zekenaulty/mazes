@@ -11,35 +11,43 @@
 
 <body>
   <div class="head">
-    <pre class="level"></pre>
-    <span class="playerPoint">
-      <span class="playerColor">&nbsp;</span>
-      <span>Player Loction</span>
-    </span>
-    <span class="endPoint">
-      <span class="endColor">&nbsp;</span>
-      <span>End Loction</span>
-    </span>
+    <div class="info">
+      <span class="level"></span>
+      <span class="playerPoint">
+        <span class="playerColor">&nbsp;</span>
+        <span>Player Loction</span>
+      </span>
+      <span class="endPoint">
+        <span class="endColor">&nbsp;</span>
+        <span>End Loction</span>
+      </span>
+    </div>
+    <div class="spacer">&nbsp;</div>
+    <div class="controls">
+      <button class="skip controls-item">SKIP LEVEL</button>
+      <button class="reset controls-item">RESET LEVEL</button>
+      <button class="solve controls-item">SOLVE LEVEL</button>
+      <button class="histogram controls-item">HISTOGRAM</button>
+      <select class="mazes controls-item"></select>
+    </div>
   </div>
   <div class="stage"></div>
   <div class="foot">
-    <button class="skip">SKIP LEVEL</button>
-    <button class="reset">RESET LEVEL</button>
-    <button class="solve">SOLVE LEVEL</button>
-    <button class="left">LEFT</button>
-    <button class="up">UP</button>
-    <button class="down">DOWN</button>
-    <button class="right">RIGHT</button>
-    <button class="histogram">HISTOGRAM</button>
-    <select class="mazes"></select>
+    <button class="hand">&lt;</button>
+    <div class="move">
+      <button class="left">LEFT</button>
+      <button class="up">UP</button>
+      <button class="down">DOWN</button>
+      <button class="right">RIGHT</button>
+    </div>
   </div>
 
-<div id="loader-backdrop" class="loader">
-  <div class="inner-loader"></div>
-</div>
-<div id="loader-text" class="loader-over">
-  <div class="loader-msg"><em>Loading</em></div>
-</div>
+  <div id="loader-backdrop" class="loader">
+    <div class="inner-loader"></div>
+  </div>
+  <div id="loader-text" class="loader-over">
+    <div class="loader-msg"><em>Loading</em></div>
+  </div>
 
 </body>
 

@@ -5,6 +5,7 @@ body {
   font-size: 0.8em;
   line-height: 1em;
   font-family: monospace;
+  color: orange;
 }
 
 .inner-loader {
@@ -84,18 +85,27 @@ button {
   font-size: 0.8em;
   line-height: 1em;
   font-family: monospace;
+  border: 0.5px solid orange;
+  color: orange;
+  background-color: black;
+}
+
+select {
+  font-size: 0.8em;
+  line-height: 1em;
+  font-family: monospace;
+  border: 0.5px solid orange;
+  color: orange;
+  background-color: black;
+  min-width: 157px;
 }
 
 .stage {
   position: fixed;
   top: 12vh;
-  left: 5vw;
-  width: 90vw;
+  left: 2vw;
+  width: 98vw;
   height: 66vh;
-  /*
-  background-color: black;
-  border: 1px solid black;
-  */
 }
 
 .head {
@@ -104,11 +114,41 @@ button {
   left: 0vw;
   height: 10vh;
   width: 100vw;
-  color: silver;
+  color: orange;
   font-size: 0.83em;
   line-height: 1em;
   font-family: monospace;
+  display: flex;
+  justify-content: stretch;
+}
 
+.info{
+  display: flex;
+  flex-grow: 1;
+  max-width: 350px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding-left: 14px;
+  padding-top: 4px;
+  justify-content: space-around;
+  gap: 6px;
+  font-size: 0.95em;
+  line-height: 1.1em;
+}
+
+.spacer {
+  flex-grow: 2;
+}
+
+.controls{
+  display: flex;
+  flex-grow: 1;
+  max-width: 175px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: end;
+  margin-top: 8px;
+  margin-right: 12px;
 }
 
 .foot {
@@ -119,98 +159,74 @@ button {
   width: 100vw;
   text-align: center;
   vertical-align: bottom;
+  display: flex;
+  justify-content: end;
+  align-content: center;
 }
 
 .up {
-  position: fixed;
-  top: 80vh;
-  left: 25vw;
-  width: 50vw;
-  height: 5vh;
+  position: absolute;
+  top: 0%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  border-radius: 0 0 0 0;
+  border: 0px solid black;
+  border-top: 1px solid orange;
 }
 
 .down {
-  position: fixed;
-  top: 85vh;
-  left: 25vw;
-  width: 50vw;
-  height: 5vh;
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  border-radius: 0 0 0 0;
+  border: 0px solid black;
+  border-bottom: 1px solid orange;
 }
 
 .left {
-  position: fixed;
-  top: 80vh;
-  left: 0vw;
-  width: 25vw;
-  height: 10vh;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 25%;
+  height: 100%;
+  border-radius: 100% 0 0 100%;
+  border: 0px solid black;
+  border-left: 1px solid orange;
+  border-top: 1px solid orange;
+  border-bottom: 1px solid orange;
 }
 
 .right {
-  position: fixed;
-  top: 80vh;
-  left: 75vw;
-  width: 25vw;
-  height: 10vh;
+  position: absolute;
+  top: 0%;
+  left: 75%;
+  width: 25%;
+  height: 100%;
+  border-radius: 0 100% 100% 0;
+  border: 0px solid black;
+  border-right: 1px solid orange;
+  border-top: 1px solid orange;
+  border-bottom: 1px solid orange;
 }
 
-.skip {
-  position: fixed;
-  left: 74vw;
-  width: 25vw;
-  height: 3vh;
-  top: 1vh;
-}
-
-.reset {
-  position: fixed;
-  left: 74vw;
-  width: 25vw;
-  height: 3vh;
-  top: 4vh;
-}
-
-.solve {
-  position: fixed;
-  left: 74vw;
-  width: 25vw;
-  height: 3vh;
-  top: 7vh;
-}
-
-.histogram {
-  position: fixed;
-  left: 48vw;
-  width: 25vw;
-  height: 3vh;
-  top: 1vh;
-}
-
-
-.mazes {
-  position: fixed;
-  left: 48vw;
-  width: 25vw;
-  height: 3vh;
-  top: 4vh;
-  font-size: 0.8em;
-  line-height: 1em;
-  font-family: monospace;
+.controls-item {
+  width: 78px;
+  height: 22px;
+  margin-right: 1px;
+  margin-top: 2px;
 }
 
 .playerPoint {
-  position: fixed;
-  left: 3vw;
   width: 25vw;
   height: 3vh;
-  top: 8vh;
 }
 
 .endPoint {
-  position: fixed;
-  left: 3vw;
   width: 25vw;
   height: 3vh;
-  top: 10vh;
 }
 
 .playerColor {
@@ -221,4 +237,20 @@ button {
 .endColor {
   display: inline-block;
   width: 1em;
+}
+
+.move {
+  width: 100%;
+  height: 100%;
+  max-width: 195px;
+  min-width: 150px;
+  position: relative;
+  margin-right: 25px;
+  margin-left: 25px;
+}
+.hand {
+  margin-right: -25px;
+  margin-left: -25px;
+  border: 0px solid black;
+  font-size: 1.7em;
 }
