@@ -148,7 +148,7 @@ export class Cell extends Array {
       this.root.end !== this &&
       this.root.active !== this
       ) {
-      let a = normalize(this.root.distances.distance(this), 0, this.root.endDistance);
+      let a = normalize(this.root.distances.distance(this), this.root.endDistance, 0);
       floor.fillColor = `rgba(100,0,200,${a})`;
       console.log(`${this.key} ${floor.fillColor}`);
       floor.draw();
