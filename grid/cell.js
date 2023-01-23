@@ -78,6 +78,7 @@ export class Cell extends Array {
       this.x,
       this.y + scale,
       this.#gfx);
+    this.lines.collect();
   }
 
   findNeighbors() {
@@ -96,6 +97,7 @@ export class Cell extends Array {
     this.neighbors.east = this.root.cell(this.row, this.column + 1);
     this.neighbors.south = this.root.cell(this.row + 1, this.column);
     this.neighbors.west = this.root.cell(this.row, this.column - 1);
+    this.neighbors.collect();
   }
 
   draw(style) {
@@ -147,7 +149,7 @@ export class Cell extends Array {
       this.root.start !== this &&
       this.root.end !== this &&
       this.root.active !== this
-      ) {
+    ) {
       let a = normalize(this.root.distances.distance(this), this.root.endDistance, 0);
       floor.fillColor = `rgba(100,0,200,${a})`;
       console.log(`${this.key} ${floor.fillColor}`);
@@ -212,6 +214,8 @@ export class Cell extends Array {
     } else {
       this.unlink(n, true);
     }
+    
+    this.walls.collect();
 
     return true;
   }

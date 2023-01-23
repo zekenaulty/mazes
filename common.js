@@ -140,6 +140,22 @@ export class DirectionData {
   east = undefined;
   south = undefined;
   west = undefined;
+  list = new Array();
+  
+  collect(){
+    this.list.length = 0;
+    if(this.north) this.list.push(this.north);
+    if(this.east) this.list.push(this.east);
+    if(this.south) this.list.push(this.south);
+    if(this.west) this.list.push(this.west);
+  }
+  
+  directionOf(c) {
+    if(this.north === c) return 'north';
+    if(this.east === c) return 'east';
+    if(this.south === c) return 'south';
+    if(this.west === c) return 'west';
+  }
 }
 
 //code I plan to get back to, yes this smells bad, oh well

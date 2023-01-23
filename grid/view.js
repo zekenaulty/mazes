@@ -87,7 +87,12 @@ export class View extends Array {
     } else {
       sh = h / ph;
     }
-    return Math.floor(Math.max(sw, sh));
+    let v = Math.floor(Math.max(sw, sh));
+    
+    if(v < 5){
+      return 5;
+    }
+    return v;
   }
 
   #init() {
@@ -211,6 +216,7 @@ export class View extends Array {
         this[r][c].walls.east = true;
         this[r][c].walls.south = true;
         this[r][c].walls.west = true;
+        this[r][c].walls.collect();
         this[r][c].links.length = 0;
       }
     }

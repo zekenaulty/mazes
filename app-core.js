@@ -10,6 +10,7 @@ Array.prototype.sample = function() {
 
 import { Binary } from './mazes/binary.js';
 import { Sidewinder } from './mazes/sidewinder.js';
+import { AldousBroder } from './mazes/aldousBroder.js';
 
 
 go(() => {
@@ -23,23 +24,22 @@ go(() => {
   const maze = new View(stage, rooms);
   const binary = new Binary(maze);
   const sidewinder = new Sidewinder(maze);
+  const aldousBroder = new AldousBroder(maze);
 
   const generators = [
    /* () => {
       binary.generate();
-    }, */
+    }, 
     () => {
       sidewinder.generate();
-    },
+    */
+     () => {
+       aldousBroder.generate();
+     },
   ];
 
   const generate = () => {
     disable();
-    if (level === max_level) {
-      alert(`WINNER!!! This device can only go to level ${max_level}! You\'ve WON!`);
-      level = 0;
-      rooms = 16;
-    }
     level++;
     rooms = rooms + Math.ceil(rooms * factor);
     maze.resize(rooms);
@@ -71,7 +71,6 @@ go(() => {
   };
 
   const view = stage.firstElementChild;
-  const max_level = 40;
 
   const left = document.querySelector('.left');
   const right = document.querySelector('.right');
