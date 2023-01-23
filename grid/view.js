@@ -37,6 +37,7 @@ export class View extends Array {
   distances = undefined;
   solution = undefined;
   maxScale = 8;
+  deadends = new Array();
 
   constructor(stage, roomCount) {
 
@@ -263,6 +264,7 @@ export class View extends Array {
     this.endDistance = d.distance;
     this.active = this.start;
     this.visited.push(this.start);
+    this.deadends = this.findDeadends();
     this.draw();
 
   }
@@ -275,6 +277,17 @@ export class View extends Array {
       }
     }
     return a;
+  }
+  
+  findDeadends(){
+    let r = new Array();
+    for(let i = 0; i < this[i].length; i++) {
+      for(let j = 0;j < this[i].length; j++)
+      if(this[i][j].links.length === 1) {
+        r.push(this[i][j]);
+      }
+    }
+    return r;
   }
 
 }

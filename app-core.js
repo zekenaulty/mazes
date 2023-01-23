@@ -82,10 +82,11 @@ go(() => {
 
   const msg = () => {
     _level.innerHTML = `  
-      Level:         ${level} <br />
-      Rooms:         ${maze.roomCount} <br />
-      Rooms Visited: ${maze.visited.length} <br />
-      Moves Made:    ${maze.moves} <br />
+      Level:          ${level} <br />
+      Rooms:          ${maze.roomCount} <br />
+      Dead Ends;:     ${maze.deadends.length} <br />
+      Rooms Visited:  ${maze.visited.length} <br />
+      Moves Made:     ${maze.moves} <br />
     `;
   };
 
