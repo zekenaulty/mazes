@@ -211,7 +211,7 @@ export class View extends Array {
         this[r][c].walls.east = true;
         this[r][c].walls.south = true;
         this[r][c].walls.west = true;
-        this[r][c].links = {};
+        this[r][c].links.length = 0;
       }
     }
   }
