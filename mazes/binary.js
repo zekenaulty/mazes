@@ -8,6 +8,9 @@ export class Binary {
   }
 
   generate() {
+    this.view.maxScale = 4;
+    this.view.resize(this.view.roomCount);
+
     let choice = [];
 
     for (let r = 0; r < this.view.length; r++) {

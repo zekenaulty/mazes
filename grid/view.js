@@ -22,19 +22,21 @@ export class View extends Array {
   end = undefined;
   endDistance = 0;
   active = undefined;
-  visited = [];
+  visited = new Array();
   moves = 0;
+  bgColor = 'black';
   wallColor = 'orange';
-  floorColor = 'black';
-  startColor = 'white';
-  endColorOne = 'green';
+  floorColor = 'black'; //'#191970';
+  startColor = '#FF5F1F';
+  endColorOne = '#D2042D';
   endColorTwo = 'white';
-  pathColor = 'white';
-  activeColor = 'red';
-  solveColor = 'cornflowerblue';
+  pathColor = '#7F00FF';
+  activeColor = '#800080';
+  solveColor = 'indigo';
   showDistance = false;
   distances = undefined;
   solution = undefined;
+  maxScale = 8;
 
   constructor(stage, roomCount) {
 
@@ -53,10 +55,7 @@ export class View extends Array {
 
   resize(roomCount) {
     this.roomCount = roomCount;
-    this.length = 0;
-    this.#populate();
     this.#init();
-    this.#fill();
   }
 
   #createCanvas() {
@@ -88,9 +87,9 @@ export class View extends Array {
       sh = h / ph;
     }
     let v = Math.floor(Math.max(sw, sh));
-    
-    if(v < 5){
-      return 5;
+
+    if (v < this.maxScale) {
+      return this.maxScale;
     }
     return v;
   }
@@ -98,19 +97,17 @@ export class View extends Array {
   #init() {
     if (this.#canvas) {
       if (!this.#created) {
-        /* ensure we scale the frame properly */
         this.#canvas.width = this.#canvas.offsetWidth;
         this.#canvas.height = this.#canvas.offsetHeight;
         this.#populate();
         this.#created = true;
+      } else {
+        this.#populate();
       }
     }
   }
 
   #populate() {
-    for (let n = 0; n < this.length; n++) {
-      this[n].length = 0;
-    }
     this.length = 0;
     this.visited.length = 0;
     this.moves = 0;
@@ -120,7 +117,6 @@ export class View extends Array {
       this.#canvas.offsetWidth,
       this.#canvas.offsetHeight);
 
-    /* Math.floor(this.roomCount / scale); */
     let perRow = 1;
     while ((perRow + 1) * scale < this.#canvas.width) {
       perRow++;
@@ -179,7 +175,7 @@ export class View extends Array {
   }
 
   #drawGrid() {
-    this.#gfx.lineWidth = 1;
+    this.#gfx.lineWidth = 2;
     this.#fill();
     for (let i = 0; i < this.length; i++) {
       this[i].draw();
@@ -192,15 +188,13 @@ export class View extends Array {
 
   #fill() {
     this.#gfx.beginPath();
-    this.#gfx.fillStyle = this.floorColor;
-    this.#gfx.strokeStyle = this.floorColor;
+    this.#gfx.fillStyle = this.bgColor;
     this.#gfx.rect(
       0,
       0,
       this.#canvas.width,
       this.#canvas.height);
     this.#gfx.fill();
-    this.#gfx.stroke();
     this.#gfx.closePath();
   }
 
@@ -258,26 +252,28 @@ export class View extends Array {
       t += 25;
     }
   }
-  
+
   setup() {
-    
+
     this.start = this.sample().sample();
     this.distances = this.start.distances();
     let d = this.distances.max();
     this.end = d.cell;
     this.endDistance = d.distance;
     this.active = this.start;
-    
+    this.visited.push(this.start);
+    this.draw();
+
   }
-  
-  toArray(){
+
+  toArray() {
     let a = new Array();
-    for(let r = 0; r < this.length; r++){
-      for(let c = 0; c < this[r].length; c++){
+    for (let r = 0; r < this.length; r++) {
+      for (let c = 0; c < this[r].length; c++) {
         a.push(this[r][c]);
       }
     }
     return a;
   }
-  
+
 }

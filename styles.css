@@ -7,6 +7,79 @@ body {
   font-family: monospace;
 }
 
+.inner-loader {
+  border: 8px solid orange;
+  border-top: 8px solid indigo;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+
+.loader {
+  background-color: black !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-over {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-msg {
+  color: white;
+  text-align: center;
+  line-height: 72px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1;}
+  100% { opacity: 0;}
+}
+
+.hide {
+  display: none !important;
+}
+
+.loader-show {
+  animation: fadeIn 100ms forwards;
+}
+
+.loader-hide {
+  animation: fadeOut 100ms forwards;
+}
+
+
 button {
   font-size: 0.8em;
   line-height: 1em;
@@ -32,7 +105,7 @@ button {
   height: 10vh;
   width: 100vw;
   color: silver;
-  font-size: 0.8em;
+  font-size: 0.83em;
   line-height: 1em;
   font-family: monospace;
 
@@ -122,4 +195,30 @@ button {
   font-size: 0.8em;
   line-height: 1em;
   font-family: monospace;
+}
+
+.playerPoint {
+  position: fixed;
+  left: 3vw;
+  width: 25vw;
+  height: 3vh;
+  top: 8vh;
+}
+
+.endPoint {
+  position: fixed;
+  left: 3vw;
+  width: 25vw;
+  height: 3vh;
+  top: 10vh;
+}
+
+.playerColor {
+  display: inline-block;
+  width: 1em;
+}
+
+.endColor {
+  display: inline-block;
+  width: 1em;
 }

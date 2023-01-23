@@ -103,17 +103,8 @@ export class Cell extends Array {
   draw(style) {
 
     let color = this.root.floorColor;
-    if (this.root.active === this) {
-      color = this.root.activeColor;
-    } else if (this.root.end === this) {
-      color = this.root.endColorOne;
-    } else if (this.root.visited.includes(this)) {
-      color = this.root.pathColor;
-    } else if (this.root.start === this) {
-      color = this.root.startColor;
-    } else if (this.root.solution && this.root.solution.length > 0 && this.root.solution.includes(this)) {
-      color = this.root.solveColor;
-    }
+    if (this.showDistance)
+      color = 'white';
 
     let floor = new Rectangle(
       this.x,
@@ -122,6 +113,37 @@ export class Cell extends Array {
       this.scale,
       color,
       this.#gfx);
+
+    const normalize = (value, min, max) => {
+      let normalized = (value - min) / (max - min);
+      return normalized;
+    };
+
+    if (this.root.showDistance &&
+      this.root.start !== this &&
+      this.root.end !== this &&
+      this.root.active !== this
+    ) {
+      let a = normalize(this.root.distances.distance(this), this.root.endDistance, 0);
+      color = `rgba(112,41,99,${a})`;
+      floor.fillColor = this.root.floorColor;
+      floor.draw();
+    }
+
+    //let key indicators override histogram, in priority order
+    if (this.root.active === this) {
+      color = this.root.activeColor;
+    } else if (this.root.end === this) {
+      color = this.root.endColorOne;
+    } else if (this.root.start === this) {
+      color = this.root.startColor;
+    } else if (this.root.visited.includes(this)) {
+      color = this.root.pathColor;
+    } else if (this.root.solution && this.root.solution.length > 0 && this.root.solution.includes(this)) {
+      color = this.root.solveColor;
+    }
+
+    floor.fillColor = color;
     floor.draw();
 
     if (this.walls.north) {
@@ -140,21 +162,6 @@ export class Cell extends Array {
       this.lines.west.draw(this.root.wallColor);
     }
 
-    const normalize = (value, min, max) => {
-      let normalized = (value - min) / (max - min);
-      return normalized;
-    };
-
-    if (this.root.showDistance &&
-      this.root.start !== this &&
-      this.root.end !== this &&
-      this.root.active !== this
-    ) {
-      let a = normalize(this.root.distances.distance(this), this.root.endDistance, 0);
-      floor.fillColor = `rgba(100,0,200,${a})`;
-      console.log(`${this.key} ${floor.fillColor}`);
-      floor.draw();
-    }
 
   }
 
@@ -214,7 +221,7 @@ export class Cell extends Array {
     } else {
       this.unlink(n, true);
     }
-    
+
     this.walls.collect();
 
     return true;

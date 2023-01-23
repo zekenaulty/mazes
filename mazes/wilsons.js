@@ -8,6 +8,9 @@ export class Wilsons {
   }
 
   generate() {
+    this.view.maxScale = 18;
+    this.view.resize(this.view.roomCount);
+    
     let unvisited = this.view.toArray();
     let first = unvisited.sample();
     unvisited.delete(first);

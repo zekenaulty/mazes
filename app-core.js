@@ -26,6 +26,17 @@ go(() => {
   let factor = 0.15;
   let level = 0;
   const stage = document.querySelector('.stage');
+  const loaderBackdrop = document.querySelector('#loader-backdrop');
+  const loaderText = document.querySelector('#loader-text');
+  const loader = (show) => {
+    if (show) {
+      loaderBackdrop.classList.remove('hide');
+      loaderText.classList.remove('hide');
+    } else {
+      loaderBackdrop.classList.add('hide');
+      loaderText.classList.add('hide');
+    }
+  };
   const _level = document.querySelector('.level');
 
   const maze = new View(stage, rooms);
@@ -43,35 +54,34 @@ go(() => {
 
   const generate = (stay) => {
     disable();
-    if (!stay) {
-      level++;
-      rooms = rooms + Math.ceil(rooms * factor);
-    }
-    maze.resize(rooms);
-    generators[mazeIndex].generate();
-    maze.visited.push(maze.start);
-    maze.draw();
-    msg();
-    enable();
+    setTimeout(() => {
+      if (!stay) {
+        level++;
+        rooms = rooms + Math.ceil(rooms * factor);
+      }
+      maze.roomCount = rooms;
+      generators[mazeIndex].generate();
+      msg();
+      setTimeout(() => {
+        enable();
+      }, 200);
+    }, 75);
   };
 
   const move = (dir) => {
-    disable();
     maze.move(dir);
     if (maze.active === maze.end) {
       generate();
     } else {
       msg();
     }
-    enable();
   };
 
   const msg = () => {
-    _level.innerHTML = ` Level:         ${level}
- Rooms:         ${maze.roomCount}
- Rooms Visited: ${maze.visited.length}
- Moves Made:    ${maze.moves}
- End Point:     ${maze.end.row},${maze.end.column}
+    _level.innerHTML = `  Level:         ${level}
+  Rooms:         ${maze.roomCount}
+  Rooms Visited: ${maze.visited.length}
+  Moves Made:    ${maze.moves}
     `;
   };
 
@@ -87,6 +97,7 @@ go(() => {
   const mazes = document.querySelector('.mazes');
 
   const disable = () => {
+    loader(true);
     left.disabled = true;
     right.disabled = true;
     up.disabled = true;
@@ -106,6 +117,7 @@ go(() => {
     solve.disabled = false;
     reset.disabled = false;
     histogram.disabled = false;
+    loader(false);
   };
 
   skip.addEventListener('click', () => {
@@ -159,9 +171,13 @@ go(() => {
     generate(true);
   });
 
-  mazeIndex = Math.floor(Math.random() * generators.length);
+  mazeIndex = 2; //Math.floor(Math.random() * generators.length);
   mazes.selectedIndex = mazeIndex;
 
+  document.querySelector('.playerColor').style.backgroundColor = maze.activeColor;
+  document.querySelector('.endColor').style.backgroundColor = maze.endColorOne;
+
   generate();
+
 
 });
