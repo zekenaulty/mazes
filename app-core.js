@@ -19,6 +19,7 @@ import { Sidewinder } from './mazes/sidewinder.js';
 import { AldousBroder } from './mazes/aldousBroder.js';
 import { Wilsons } from './mazes/wilsons.js';
 import { HuntAndKill } from './mazes/huntAndKill.js';
+import { RecursiveBacktracker } from './mazes/recursiveBacktracker.js';
 
 
 go(() => {
@@ -46,13 +47,15 @@ go(() => {
   const aldousBroder = new AldousBroder(maze);
   const wilsons = new Wilsons(maze);
   const huntKill = new HuntAndKill(maze);
+  const recursiveBacktracker = new RecursiveBacktracker(maze);
 
   const generators = [
       binary,
       sidewinder,
       aldousBroder,
       wilsons,
-      huntKill
+      huntKill,
+      recursiveBacktracker
   ];
 
   const generate = (stay) => {
@@ -193,7 +196,7 @@ go(() => {
     generate(true);
   });
 
-  mazeIndex = 4; //Math.floor(Math.random() * generators.length);
+  mazeIndex = 5; //Math.floor(Math.random() * generators.length);
   mazes.selectedIndex = mazeIndex;
 
   document.querySelector('.playerColor').style.backgroundColor = maze.activeColor;
