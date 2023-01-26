@@ -21,7 +21,6 @@ import { Wilsons } from './mazes/wilsons.js';
 import { HuntAndKill } from './mazes/huntAndKill.js';
 import { RecursiveBacktracker } from './mazes/recursiveBacktracker.js';
 
-
 go(() => {
   let mazeIndex = 0;
   let rooms = 12;
@@ -41,7 +40,6 @@ go(() => {
     }
   };
   const _level = document.querySelector('.level');
-
   const maze = new View(stage, rooms);
   const binary = new Binary(maze);
   const sidewinder = new Sidewinder(maze);
@@ -89,9 +87,9 @@ go(() => {
 
   const msg = () => {
     _level.innerHTML = `  
-      Level:          ${level}, Solved Perfectly: ${perfectSolve}<br />
-      Rooms:          ${maze.roomCount}, Dead Ends:     ${maze.deadends.length} <br />
-      Rooms Visited:  ${maze.visited.length}, Moves Made:     ${maze.moves}
+      Level: ${level}, Solved Perfectly: ${perfectSolve}<br />
+      Rooms: ${maze.roomCount}, Dead Ends: ${maze.deadends.length} <br />
+      Rooms Visited: ${maze.visited.length}, Moves Made: ${maze.moves}
       
     `;
   };
@@ -112,25 +110,9 @@ go(() => {
 
   const disable = () => {
     loader(true);
-    left.disabled = true;
-    right.disabled = true;
-    up.disabled = true;
-    down.disabled = true;
-    skip.disabled = true;
-    solve.disabled = true;
-    reset.disabled = true;
-    histogram.disabled = true;
   };
 
   const enable = () => {
-    left.disabled = false;
-    right.disabled = false;
-    up.disabled = false;
-    down.disabled = false;
-    skip.disabled = false;
-    solve.disabled = false;
-    reset.disabled = false;
-    histogram.disabled = false;
     loader(false);
   };
 
