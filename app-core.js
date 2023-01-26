@@ -24,9 +24,10 @@ import { RecursiveBacktracker } from './mazes/recursiveBacktracker.js';
 
 go(() => {
   let mazeIndex = 0;
-  let rooms = 16;
-  let factor = 0.15;
+  let rooms = 12;
+  let factor = 0.35;
   let level = 0;
+  let perfectSolve = -1;
   const stage = document.querySelector('.stage');
   const loaderBackdrop = document.querySelector('#loader-backdrop');
   const loaderText = document.querySelector('#loader-text');
@@ -64,6 +65,9 @@ go(() => {
       if (!stay) {
         level++;
         rooms = rooms + Math.ceil(rooms * factor);
+        if(maze.visited.length === maze.moves) {
+          perfectSolve++;
+        }
       }
       maze.roomCount = rooms;
       generators[mazeIndex].generate();
@@ -85,11 +89,10 @@ go(() => {
 
   const msg = () => {
     _level.innerHTML = `  
-      Level:          ${level} <br />
-      Rooms:          ${maze.roomCount} <br />
-      Dead Ends;:     ${maze.deadends.length} <br />
-      Rooms Visited:  ${maze.visited.length} <br />
-      Moves Made:     ${maze.moves} <br />
+      Level:          ${level}, Solved Perfectly: ${perfectSolve}<br />
+      Rooms:          ${maze.roomCount}, Dead Ends:     ${maze.deadends.length} <br />
+      Rooms Visited:  ${maze.visited.length}, Moves Made:     ${maze.moves}
+      
     `;
   };
 

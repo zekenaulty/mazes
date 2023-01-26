@@ -9,7 +9,7 @@ export class Sidewinder {
 
   generate() {
 
-    this.view.maxScale = 6;
+    this.view.maxScale = 15;
     this.view.resize(this.view.roomCount);
 
     for (let r = 0; r < this.view.length; r++) {

@@ -8,7 +8,7 @@ export class RecursiveBacktracker {
   }
 
   generate() {
-    this.view.maxScale = 5;
+    this.view.maxScale = 15;
     this.view.resize(this.view.roomCount);
 
     let stack = new Array();

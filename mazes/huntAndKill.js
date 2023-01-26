@@ -8,7 +8,7 @@ export class HuntAndKill {
   }
 
   generate() {
-    this.view.maxScale = 5;
+    this.view.maxScale = 15;
     this.view.resize(this.view.roomCount);
 
     let current = this.view.sample().sample();
