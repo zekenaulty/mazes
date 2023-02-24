@@ -27,7 +27,7 @@ export class View extends Array {
   bgColor = 'black';
   wallColor = 'orange';
   floorColor = 'black'; //'#191970';
-  startColor = '#FF5F1F';
+  startColor = 'silver';
   endColorOne = '#D2042D';
   endColorTwo = 'white';
   pathColor = '#7F00FF';

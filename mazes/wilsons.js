@@ -18,7 +18,6 @@ export class Wilsons {
       let cell = unvisited.sample();
       let path = new Array();
       path.push(cell);
-      unvisited.forEach((c) => { c.draw(); });
       
       while (unvisited.includes(cell)) {
         cell = cell.neighbors.list.sample();
